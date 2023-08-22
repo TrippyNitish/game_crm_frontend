@@ -4,7 +4,6 @@ import Cookies from 'js-cookie';
 // const baseUrl = 'https://crmserver-8jed.onrender.com'
 const baseUrl = 'http://localhost:5000'
 
-
 const getClientListApi = async (details) => {
   const response = await axios.post(`${baseUrl}/getClientList`, details)
 
@@ -12,6 +11,8 @@ const getClientListApi = async (details) => {
     alert(response.data.error)  
   else if (response.status == 200) 
     return response
+  else if (response.status == 204) 
+    return alert("You are now Inactive Please contact your")
   
 }
 
@@ -33,15 +34,41 @@ const addClientApi = async ( details) => {
   }
 }
 
-const updateClientApi = async (  details) => {
+const updateCreditApi = async (  details) => {
   const cookieValue = Cookies.get('userToken');
 
-  const response = await axios.post(`${baseUrl}/updateClientDetails`, {...details,cookie:cookieValue})
+  const response = await axios.post(`${baseUrl}/updateClientCredits`, {...details,cookie:cookieValue})
   if (response.status == 201) {   
     alert(response.data.error)
   }
   else if (response.status == 200) {
-    alert(`Client updated successfully`)
+    alert(`Client credits updated successfully`)
+    return response
+  }
+}
+
+const activeStatusApi = async ( details) => {
+  const cookieValue = Cookies.get('userToken');
+
+  const response = await axios.post(`${baseUrl}/updateClientActivity`, {...details,cookie:cookieValue})
+  if (response.status == 201) {   
+    alert(response.data.error)
+  }
+  else if (response.status == 200) {
+    alert(`Client activity updated successfully`)
+    return response
+  }
+}
+
+const updatePasswordApi = async ( details) => {
+  const cookieValue = Cookies.get('userToken');
+
+  const response = await axios.post(`${baseUrl}/updateClientPassword`, {...details,cookie:cookieValue})
+  if (response.status == 201) {   
+    alert(response.data.error)
+  }
+  else if (response.status == 200) {
+    alert(`Client Password updated successfully`)
     return response
   }
 }
@@ -70,4 +97,4 @@ const transactionsApi = async(details)=>{
   
 }
 
-export {baseUrl, getClientListApi,getRealTimeCreditsApi, addClientApi, updateClientApi, deleteClientApi,transactionsApi }
+export {baseUrl, getClientListApi,activeStatusApi,getRealTimeCreditsApi,updatePasswordApi, addClientApi, updateCreditApi, deleteClientApi,transactionsApi }

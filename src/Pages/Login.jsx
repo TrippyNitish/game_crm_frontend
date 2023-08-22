@@ -21,7 +21,9 @@ const Login = () => {
         if (response.status == 201) {
             alert(`You are not registered, Please contact your owner`)
         }
-
+        else if (response.status == 204){ 
+            alert("You are disabled please contact your owner")           
+        }
         else if (response.status == 200){            
             const token = response.data.token            
             Cookies.set('userToken', token, { expires: 7 });
