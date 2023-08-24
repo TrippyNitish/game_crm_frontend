@@ -1,0 +1,244 @@
+.dashboardBody{
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(186, 186, 186);
+}
+
+.navBar{
+    padding: 6px;
+    position: fixed;
+    top: 0;
+    height: 60px;
+    background-color: rgb(204, 154, 246);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;    
+}
+
+.navBarComponents{
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.welcome{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.closeButton{
+    color: black;
+    position: absolute;
+    font-size: 30px;
+    top: 0px;
+    right: 10px;
+    z-index: 200px;
+    cursor: pointer;
+}
+.closeButton:hover{
+    cursor: pointer;
+}
+
+.form{
+    margin-top: 20px;
+}
+
+
+
+
+.historyTable{
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    color: black;
+    padding-top: 40px;
+    position: absolute;
+    overflow: auto;
+    max-height: 400px;
+}
+
+.box{
+    z-index: 100px;
+    min-width: 400px;
+    min-height:400px ;
+    background-color: bisque;
+}
+
+.options{
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+
+.userTable{
+    margin-top: 75px;
+    width: 100%;
+     overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.table{
+    width: 100%;
+}
+
+.tableCell{
+    text-align: center;
+    color: black;
+    background-color: white;
+}
+
+
+.tableCellHeader{
+    padding: 10px;
+}
+
+.tableCellData{
+}
+
+.tableCellDataUserName{
+}
+.tableCellDataUserName:hover{
+    cursor: pointer;
+    background-color: #dfeffa;
+}
+
+.tableCellDataButtonContainer{
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.tableCellDataButtons{
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+}
+
+
+.tableCellDataButtonContainerButton{
+}
+
+.tableCellDataButtons{
+   
+
+}
+
+@media (max-width: 978px) {
+    .userTable {
+     
+    }
+
+    .table{
+        border: 1px solid red;
+        
+    }
+ 
+   
+    .tableCellDataButtonContainer{
+        flex-direction: column;
+    }
+    
+    .tableCellHeader{
+        padding-top: 5px;
+        padding-left: 0px;
+        font-size: smaller;
+    }
+    .tableCell{
+        padding: 2px;
+        
+    }
+    .tableCellData{
+        font-size: smaller;
+    }
+    .tableCellDataButtonContainerButton{
+        font-size: smaller;
+
+    }
+    
+}
+
+@media (max-width: 978px) {
+
+    .bigButtons{
+        width: 125px;
+    }
+    .navBarButtons{
+        font-size: smaller;
+        padding: 5px;
+        min-width: 80px;
+        height: 30px;
+    }
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #6c93ad;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* The shadow effect */
+    transition: box-shadow 0.3s ease; /* Transition for the shadow effect */
+  }
+
+  button:hover{
+    background-color: #4d6676;
+
+  }
+
+.deleteButton{
+    background-color: tomato;
+}
+
+.deleteButton:hover{
+    background-color: rgb(216, 73, 48);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    position: relative;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .modal-content-history {
+    position: relative;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    max-height: 80vh;
+    text-align: center;
+  }
+  

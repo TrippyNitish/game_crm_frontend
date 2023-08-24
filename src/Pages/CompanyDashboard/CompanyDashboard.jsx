@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { setClientsList, setCredits, setUsers } from '../../redux/reducers';
 import Cookies from 'js-cookie';
-import './dashboard.css'
-import { addClientApi, deleteClientApi, getClientListApi,activeStatusApi, getRealTimeCreditsApi, transactionsApi, updateCreditApi, updatePasswordApi } from '../../services/companyApi';
+import './companyDashboard.css'
+import { addClientApi, deleteClientApi, getClientListApi, activeStatusApi, getRealTimeCreditsApi, transactionsApi, updateCreditApi, updatePasswordApi } from '../../services/api';
 
 
-const Dashboard = () => {
+const CompanyDashboard = () => {
+
   const navigate = useNavigate()
 
   useSelector((state) => console.log("stt", state))
@@ -29,13 +30,16 @@ const Dashboard = () => {
   const [openDelete, setOpenDelete] = useState(false)
   const [openHistory, setOpenHistory] = React.useState(false);
   const [isUpdatePassword, setIsUpdatePassword] = useState(false)
-
+  var [startDate,setStartDate]=useState("")
+  var [endDate,setEndDate]=useState(Date.now)  
   const [details, setDetails] = useState(emptyDetails)
   const [history, setHistory] = useState([])
   var [userNameVar, setuserNameVar] = useState("")
   const [addOrRedeemeCredits, setAddOrRedeemeCredits] = useState(1)
   const [initialcredits, setInitialCredits] = useState(0)
   var [filteredClient, setFilteredClient] = useState([])
+
+  const currentDate = new Date().toISOString().split('T')[0];
 
   const handleAddClient = () => {
     setIsAddClient(true)
@@ -89,7 +93,7 @@ const Dashboard = () => {
       alert("Password contains at least two numbers")
       return
     }
-    if(details.password!==details.confirmPassword){
+    if (details.password !== details.confirmPassword) {
       alert("Password is not matching")
       return
     }
@@ -132,13 +136,13 @@ const Dashboard = () => {
     setDetails(emptyDetails)
   }
 
-  const updatePassword = async ()=>{
-    
-    if(details.password!==details.confirmNewpassword){
+  const updatePassword = async () => {
+
+    if (details.password !== details.confirmNewpassword) {
       alert("Password is not matching")
       return
     }
-    const response = await updatePasswordApi({...details,clientUserName:details.userName ,userName: user.userName})
+    const response = await updatePasswordApi({ ...details, clientUserName: details.userName, userName: user.userName })
     setIsUpdatePassword(false)
   }
 
@@ -179,13 +183,13 @@ const Dashboard = () => {
     setDetails({ ...items, clientUserName: items.userName, userName: user.userName, initialcredits, credits: 0 })
   }
 
-  const handleActiveInactive=async(items)=>{
-    console.log("activity",items.activeStatus)
-    const response = await activeStatusApi({ clientUserName: items.userName, userName: user.userName,activeStatus:items.activeStatus })
-    if(response)
+  const handleActiveInactive = async (items) => {
+    console.log("activity", items.activeStatus)
+    const response = await activeStatusApi({ clientUserName: items.userName, userName: user.userName, activeStatus: items.activeStatus })
+    if (response)
       getClientList()
   }
- 
+
 
   const filterClients = (searchText) => {
     setFilteredClient(
@@ -193,6 +197,15 @@ const Dashboard = () => {
     )
   }
 
+
+  const handleCompanyClick = async (row) => {
+    const response = await getClientListApi({ userName: row.userName })
+    setFilteredClient(response.data.clientList)
+  }
+
+  const seachTransactionInPeriod=()=>{
+
+  }
 
   useEffect(() => {
     setFilteredClient(clientList)
@@ -210,7 +223,7 @@ const Dashboard = () => {
         <div className="navBarComponents">
           <div>{`Credits : ${user.credits != null ? user.credits : "Infinite"}`}  </div>
         </div>
-        <div> Game </div>
+        <div> Company </div>
         <div className="navBarComponents">
           <button className="navBarButtons" onClick={() => handleAddClient()}>Add Client</button>
           <button className="navBarButtons deleteButton" onClick={(e) => handleLogOut(e)}>LogOut</button>
@@ -333,43 +346,63 @@ const Dashboard = () => {
               {history.map((row) => (
                 <tr className="tableCell" key={row.name}>
                   <td className="tableCellData">{row.credit}</td>
-                  <td className="tableCellData">{row.createdAt}</td>
+                  <td className="tableCellData">{`${row.createdAtDate},${row.createdAtTime}`}</td>
                 </tr>
               ))}
             </table>
           </div>
         </div>}
 
-      <div className="userTable">
-        <table className="table" >
-          <tr className="tableCell">
-            <th className="tableCellHeader">User Name</th>
-            <th className="tableCellHeader">Credits</th>
-            <th className="tableCellHeader">Buttons</th>
-          </tr>
 
-          {filteredClient.map((row, index) => (
-            <tr className="tableCell" key={row.name}>
-              <td className="tableCellData">{row.userName}</td>
-              <td className="tableCellData">{row.credits}</td>
-              <td className="tableCellDataButtonContainer">
-                <div className="tableCellDataButtons" >
-                  <button className="tableCellDataButtonContainerButton deleteButton" onClick={() => handleDeleteModal(row.userName)}>Delete</button>
-                  <button className="tableCellDataButtonContainerButton" onClick={() => handleTransactions(row.userName)}>Transactions</button>
-                  <button className="tableCellDataButtonContainerButton" onClick={() => addCredits(row, 1)}>Add Credits</button>
-                  <button className="tableCellDataButtonContainerButton" style={{backgroundColor:row.activeStatus?"green":"red"}} onClick={() => handleActiveInactive(row)}>{`${row.activeStatus?"Enabled":"Disabled"}`} </button>
-                </div>
-                <div className="tableCellDataButtons" >
-                  <button className="tableCellDataButtonContainerButton bigButtons" onClick={() => addCredits(row, -1)}>Redeem Credits</button>
-                  <button className="tableCellDataButtonContainerButton bigButtons" onClick={() => handleUpdatePassword(row)}>Update Password</button>
-                </div>
-              </td>
+      <div className="userTable">
+        <div className='options'>
+          <div>
+            <label for="start">Start date:</label>
+            <input type="date" id="start" name="trip-start" value={startDate} min="2018-01-01" max={currentDate} onChange={(e)=>setStartDate(e.target.value)}/>
+          </div>
+          <div>
+            <label for="start">End date:</label>
+            <input type="date" id="start" name="trip-start" value={endDate} min="2019-01-01" max={currentDate} onChange={(e)=>setEndDate(e.target.value)}/>
+          </div>
+          <button onClick={()=>seachTransactionInPeriod()}>Search</button>
+        </div>
+
+        <div>
+          <table className="table" >
+            <tr className="tableCell">
+              <th className="tableCellHeader">User Name</th>
+              <th className="tableCellHeader">NickName</th>
+              <th className="tableCellHeader">Credits</th>
+              <th className="tableCellHeader">Buttons</th>
             </tr>
-          ))}
-        </table>
+
+            {filteredClient.map((row, index) => (
+              <tr className="tableCell" key={row.name}>
+                <td className="tableCellDataUserName" onClick={() => handleCompanyClick(row)}>{row.userName}</td>
+                <td className="tableCellData">{row.nickName ? row.nickName : "N/A"}</td>
+                <td className="tableCellData">{row.credits}</td>
+
+                <td className="tableCellDataButtonContainer">
+                  <div className="tableCellDataButtons" >
+                    <button className="tableCellDataButtonContainerButton deleteButton" onClick={() => handleDeleteModal(row.userName)}>Delete</button>
+                    <button className="tableCellDataButtonContainerButton" onClick={() => handleTransactions(row.userName)}>Transactions</button>
+                    {row.designation == "master" && <button className="tableCellDataButtonContainerButton" onClick={() => addCredits(row, 1)}>Add Credits</button>}
+                    <button className="tableCellDataButtonContainerButton" style={{ backgroundColor: row.activeStatus ? "green" : "red" }} onClick={() => handleActiveInactive(row)}>{`${row.activeStatus ? "Enabled" : "Disabled"}`} </button>
+                  </div>
+                  <div className="tableCellDataButtons" >
+                    {row.designation == "master" && < button className="tableCellDataButtonContainerButton bigButtons" onClick={() => addCredits(row, -1)}>Redeem Credits</button>}
+                    <button className="tableCellDataButtonContainerButton bigButtons" onClick={() => handleUpdatePassword(row)}>Update Password</button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </table>
+
+        </div>
+
       </div>
     </div>
   )
 }
 
-export default Dashboard
+export default CompanyDashboard

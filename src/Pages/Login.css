@@ -1,0 +1,31 @@
+.captcha-container {
+  height: 50px;
+  width: 150px;
+  position: relative;
+}
+
+.captcha-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+}
+
+.captcha-text {
+  color: rgb(115, 172, 145);
+  position: absolute;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  top:-12px;
+  font-size: 30px;
+  letter-spacing: 2px; /* Adds space between characters */
+  transform-origin: center bottom;
+  left: -40px;
+  transform: translate(50%, -50%) scale(1.2, 0.8) skewX(-15deg);
+  z-index: 1;
+  user-select: none;
+  -webkit-user-select: none;
+  /* For Safari */
+  -moz-user-select: none;
+  /* For Firefox */
+  -ms-user-select: none;
+}
