@@ -3,13 +3,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import ResetPassword from './Pages/ResetPassword';
 import CompanyDashboard from './Pages/CompanyDashboard/CompanyDashboard';
+import './App.css'
 
 function App() {
-
-  
+ 
   return (
     <>
-      <div>
+      <div style={{minWidth:"100%",minHeight:"100%"}}>
         <Router>
           <Routes>
             <Route exact path="/" element={<Login />} />

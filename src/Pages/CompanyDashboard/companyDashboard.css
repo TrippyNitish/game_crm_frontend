@@ -1,22 +1,20 @@
-.dashboardBody{
+.companyDashboardBody{
     width: 100%;
-    height: 100vh;
-    background-color: rgb(186, 186, 186);
-}
-
-.navBar{
-    padding: 6px;
-    position: fixed;
-    top: 0;
-    height: 60px;
-    background-color: rgb(204, 154, 246);
-    width: 100%;
+    height: 100%;
     display: flex;
-    align-items: center;
-    justify-content:space-between;    
+    flex-direction: column;
 }
 
-.navBarComponents{
+.companyNavBar{  
+    height: 50px;
+    background-color: rgb(204, 154, 246);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.companyNavBarComponents{
     padding: 10px;
     display: flex;
     gap: 10px;
@@ -44,9 +42,6 @@
     margin-top: 20px;
 }
 
-
-
-
 .historyTable{
     width: 100%;
     background-color: rgb(255, 255, 255);
@@ -71,44 +66,69 @@
 }
 
 
-.userTable{
-    margin-top: 75px;
+.companyUserView{
+    /* margin-top: 75px; */
+    padding: 10px;
     width: 100%;
-     overflow: hidden;
-
+     /* overflow: hidden; */
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
+    gap: 10px;
+}
+
+.firstCompnayUserViewColumn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    background-color: white;
+    padding: 10px;
+}
+
+.secondCompnayUserViewColumn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    background-color: white;
+    padding: 10px;
 
 }
 
-.table{
+.thirdCompnayUserViewColumn{
+  margin-top: 50px;
+}
+
+.companyTable{
     width: 100%;
 }
 
-.tableCell{
+.companyTableCell{
     text-align: center;
     color: black;
     background-color: white;
 }
 
 
-.tableCellHeader{
+.companyTableCellHeader{
     padding: 10px;
 }
 
-.tableCellData{
+.companyTableCellData{
 }
 
-.tableCellDataUserName{
+.companyTableCellDataUserName{
+
 }
-.tableCellDataUserName:hover{
+
+.companyTableCellDataUserName:hover{
     cursor: pointer;
     background-color: #dfeffa;
 }
 
-.tableCellDataButtonContainer{
+.companyTableCellDataButtonContainer{
     padding: 5px;
     display: flex;
     justify-content: center;
@@ -116,7 +136,7 @@
     flex-direction: row;
 }
 
-.tableCellDataButtons{
+.companyTableCellDataButtons{
     padding: 5px;
     display: flex;
     justify-content: center;
@@ -126,59 +146,335 @@
 }
 
 
-.tableCellDataButtonContainerButton{
+.companyTableCellDataButtonContainerButton{
+    font-size: 15px;
+    padding: 10px;
+    padding-left: 15px;
 }
 
-.tableCellDataButtons{
-   
+.companyTableCellDataButtons{   
 
 }
+.secondCompnayUserViewColumn{
+   padding: 20px;
 
-@media (max-width: 978px) {
-    .userTable {
-     
-    }
+}
+.secondCompnayUserViewColumnComponents{
+   display: flex;    
+   justify-content: center;
+   align-items: center;
+   gap:20px 
+}
+.firstCompnayUserViewColumn{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    padding: 10px;
+}
+.secondCompnayUserViewColumn{
+    width: 90%;
+    flex-direction: row;
+}
+.thirdCompnayUserViewColumn{
+    margin-top: 0px;
+  }
 
-    .table{
-        border: 1px solid red;
-        
+
+@media (max-width: 850px) {
+    .companyUserView{
+        padding: 2px;
     }
- 
-   
-    .tableCellDataButtonContainer{
-        flex-direction: column;
+    .companyUserTable {
+        width: 100%;
+
+    }
+    .companyTable{
+        width: 100%;
     }
     
-    .tableCellHeader{
-        padding-top: 5px;
+    .companyTableCellDataButtonContainer{
+        flex-direction: column;
+        gap: 0px;
+        margin: 0px;
+        padding: 0px;
+    }
+    
+    .companyTableCellHeader{
+        padding-top: 6px;
+        padding-left: 0px;
+        font-size: 17px;
+        min-width: 90px;
+    }
+    .companyTableCell{
+        padding: 5px;
+        
+    }
+    .companyTableCellData{
+        font-size: 1.8rem;
+    }
+    .companyTableCellDataButtons{
+        gap:5px
+    }
+
+    .companyTableCellDataUserName{
+        font-size: 15px;
+    }
+    .companyTableCellData{
+        font-size: 12px;
+    }
+    .secondCompnayUserViewColumn{
+        padding: 20px;
+        gap: 10px;
+     
+     }
+    .companyTableCellDataButtonContainerButton{
+        font-size: 15px;
+        padding: 8px;
+    }
+    .upper{
+        min-width: 117px;
+        padding: 5px;
+        
+    }
+    .firstCompnayUserViewColumn{
+        width: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 50px;
+        padding: 10px;
+    }
+    .secondCompnayUserViewColumn{
+        width: 90%;
+        flex-direction: column;
+    }
+    .thirdCompnayUserViewColumn{
+        margin-top: 0px;
+      }
+    
+    
+}
+
+@media (max-width: 670px) {
+    .companyUserView{
+        padding: 2px;
+    }
+    .companyUserTable {
+        width: 100%;
+
+    }
+    .companyTable{
+        width: 100%;
+    }
+    
+    .companyTableCellDataButtonContainer{
+        flex-direction: column;
+        gap: 0px;
+        margin: 0px;
+        padding: 0px;
+    }
+    
+    .companyTableCellHeader{
+        padding-top: 6px;
         padding-left: 0px;
         font-size: smaller;
+        min-width: 60px;
+
     }
-    .tableCell{
+    .companyTableCell{
         padding: 2px;
         
     }
-    .tableCellData{
+    .companyTableCellData{
         font-size: smaller;
     }
-    .tableCellDataButtonContainerButton{
-        font-size: smaller;
+    .companyTableCellDataButtons{
+        gap:5px;
+    }
 
+    .companyTableCellDataUserName{
+        font-size: 15px;
     }
+    .companyTableCellData{
+        font-size: 15px;
+    }
+    .secondCompnayUserViewColumn{
+        padding: 20px;
+        gap: 10px;
+     
+     }
+    .companyTableCellDataButtonContainerButton{
+        font-size: 15px;
+        padding: 7px;
+    }
+    .upper{
+        min-width: 96px;
+        padding: 5px;
+        
+    }
+    .firstCompnayUserViewColumn{
+        width: 94%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 50px;
+        background-color: white;
+        padding: 10px;
+    }
+    .secondCompnayUserViewColumn{
+        flex-direction: column;
+        width: 94%;
+    }
+    .thirdCompnayUserViewColumn{
+        margin-top: 5px;
+      }   
     
 }
-
-@media (max-width: 978px) {
-
-    .bigButtons{
-        width: 125px;
+@media (max-width: 510px) {
+    .companyUserView{
+        padding: 2px;
     }
-    .navBarButtons{
+    .companyUserTable {
+        width: 100%;
+
+    }
+    .companyTable{
+        width: 100%;
+    }
+    
+    .companyTableCellDataButtonContainer{
+        flex-direction: column;
+        gap: 0px;
+        margin: 0px;
+        padding: 0px;
+    }
+    
+    .companyTableCellHeader{
+        padding-top: 6px;
+        padding-left: 0px;
         font-size: smaller;
-        padding: 5px;
-        min-width: 80px;
-        height: 30px;
+        min-width: 50px;
+
     }
+    .companyTableCell{
+        padding: 2px;
+        
+    }
+    .companyTableCellData{
+        font-size: smaller;
+    }
+    .companyTableCellDataButtons{
+        gap:2px
+    }
+
+    .companyTableCellDataUserName{
+        font-size: 12px;
+    }
+    .companyTableCellData{
+        font-size: 12px;
+    }
+    .secondCompnayUserViewColumn{
+        padding: 20px;
+        gap: 10px;
+     
+     }
+    .companyTableCellDataButtonContainerButton{
+        font-size: 9px;
+        padding: 5px;
+    }
+    .upper{
+        min-width: 72px;
+        padding: 5px;
+        
+    }
+    .firstCompnayUserViewColumn{
+        width: 95%;       
+        padding: 10px;
+    }
+    .secondCompnayUserViewColumn{
+        width: 95%;
+        flex-direction: column;
+    }
+    .thirdCompnayUserViewColumn{
+        margin-top: 0px;
+      }
+    
+    
+}
+@media (max-width: 400px) {
+    .companyUserView{
+        padding: 2px;
+    }
+    .companyUserTable {
+        width: 100%;
+
+    }
+    .companyTable{
+        width: 100%;
+    }
+    
+    .companyTableCellDataButtonContainer{
+        flex-direction: column;
+        gap: 0px;
+        margin: 0px;
+        padding: 0px;
+    }
+    
+    .companyTableCellHeader{
+        padding-top: 6px;
+        padding-left: 0px;
+        font-size: smaller;
+    }
+    .companyTableCell{
+        padding: 2px;
+        
+    }
+    .companyTableCellData{
+        font-size: smaller;
+    }
+    .companyTableCellDataButtons{
+        gap:2px
+    }
+
+    .companyTableCellDataUserName{
+        font-size: 12px;
+    }
+    .companyTableCellData{
+        font-size: 12px;
+    }
+    .secondCompnayUserViewColumn{
+        padding: 20px;
+        gap: 10px;
+     
+     }
+    .companyTableCellDataButtonContainerButton{
+        font-size: 8px;
+        padding: 2px;
+    }
+    .upper{
+        min-width: 58px;
+        padding: 5px;
+        
+    }
+    .firstCompnayUserViewColumn{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 50px;
+        background-color: white;
+        padding: 10px;
+    }
+    .secondCompnayUserViewColumn{
+        flex-direction: column;
+    }
+    .thirdCompnayUserViewColumn{
+        margin-top: 0px;
+      }
+    
+    
 }
 
 button {
@@ -195,7 +491,6 @@ button {
 
   button:hover{
     background-color: #4d6676;
-
   }
 
 .deleteButton{

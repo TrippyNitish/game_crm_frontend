@@ -5,9 +5,7 @@
 }
 
 .navBar{
-    padding: 6px;
-    position: fixed;
-    top: 0;
+   
     height: 60px;
     background-color: rgb(204, 154, 246);
     width: 100%;

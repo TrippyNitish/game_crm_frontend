@@ -31,15 +31,15 @@ const CompanyDashboard = () => {
   const [openDelete, setOpenDelete] = useState(false)
   const [openHistory, setOpenHistory] = React.useState(false);
   const [isUpdatePassword, setIsUpdatePassword] = useState(false)
-  var [startDate,setStartDate]=useState("")
-  var [endDate,setEndDate]=useState(Date.now)  
+  var [startDate, setStartDate] = useState("")
+  var [endDate, setEndDate] = useState(Date.now)
   const [details, setDetails] = useState(emptyDetails)
   const [history, setHistory] = useState([])
   var [userNameVar, setuserNameVar] = useState("")
   const [addOrRedeemeCredits, setAddOrRedeemeCredits] = useState(1)
   const [initialcredits, setInitialCredits] = useState(0)
   var [filteredClient, setFilteredClient] = useState([])
-  const [selectedHirarchy,setSelectedHirarchy]=useState("all")
+  const [selectedHirarchy, setSelectedHirarchy] = useState("all")
 
   const currentDate = new Date().toISOString().split('T')[0];
 
@@ -203,8 +203,8 @@ const CompanyDashboard = () => {
     setFilteredClient(response.data.clientList)
   }
 
-  const searchTransactionInPeriod=async ()=>{
-    const response = await getTransactionsOnBasisOfPeriodApi({startDate,endDate,hirarchyName:selectedHirarchy,userName:user.userName})
+  const searchTransactionInPeriod = async () => {
+    const response = await getTransactionsOnBasisOfPeriodApi({ startDate, endDate, hirarchyName: selectedHirarchy, userName: user.userName })
     setHistory(response.data.transactionsFiltered)
     setOpenHistory(true)
   }
@@ -220,18 +220,86 @@ const CompanyDashboard = () => {
   }, [])
 
   return (
-    <div className="dashboardBody">
-      <div className="navBar">
+    <div className="companyDashboardBody">
+      <div className="companyNavBar">
         <div className="navBarComponents">
           <div>{`Credits : ${user.credits != null ? user.credits : "Infinite"}`}  </div>
         </div>
         <div> Company </div>
-        <div className="navBarComponents">
-          <button className="navBarButtons" onClick={() => handleAddClient()}>Add Client</button>
-          <button className="navBarButtons deleteButton" onClick={(e) => handleLogOut(e)}>LogOut</button>
+        <div className="companyNavBarComponents">
           <div className="welcome">{`Welcome : ${user.userName}`}  </div>
+          <button className="navBarButtons deleteButton" onClick={(e) => handleLogOut(e)}>LogOut</button>
         </div>
-        <input className='search' type='text' onChange={(e) => filterClients(e.target.value)} />
+      </div>
+
+      <div className="companyUserView">
+        <div className='firstCompnayUserViewColumn'>
+          <button className="navBarButtons" onClick={() => handleAddClient()}>Add Client</button>
+          <input className='search' type='text' placeholder='Search' onChange={(e) => filterClients(e.target.value)} />
+        </div>
+
+        <div className='secondCompnayUserViewColumn'>
+          <div className='secondCompnayUserViewColumnComponents'>
+            <div>
+              <label for="start">Start date: {' '}</label>
+              <input type="date" value={startDate} min="2018-01-01" max={currentDate} onChange={(e) => setStartDate(e.target.value)} />
+            </div>
+            <div>
+              <label for="start">End date:{' '}</label>
+              <input type="date" value={endDate} min="2019-01-01" max={currentDate} onChange={(e) => setEndDate(e.target.value)} />
+            </div>
+
+          </div>
+          <div className='secondCompnayUserViewColumnComponents'>
+            <div>
+              <label>Select Type : {' '}</label>
+              <select value={selectedHirarchy} onChange={(e) => setSelectedHirarchy(e.target.value)}>
+                <option value="all">All</option>
+                <option value="master">Master</option>
+                <option value="distributer">Distributer</option>
+                <option value="subDistributer">Sub Distributer</option>
+                <option value="store">Store</option>
+                <option value="users">Users</option>
+              </select>
+            </div>
+            <button onClick={() => searchTransactionInPeriod()}>Search</button>
+
+          </div>
+
+        </div>
+
+        <div className='thirdCompnayUserViewColumn'>
+          <table className="companyTable" >
+            <tr className="companyTableCell">
+              <th className="companyTableCellHeader">User Name</th>
+              <th className="companyTableCellHeader">NickName</th>
+              <th className="companyTableCellHeader">Credits</th>
+              <th className="companyTableCellHeader">Buttons</th>
+            </tr>
+
+            {filteredClient.map((row, index) => (
+              <tr className="companyTableCell" key={row.name}>
+                <td className="companyTableCellDataUserName" onClick={() => handleCompanyClick(row)}>{row.userName}</td>
+                <td className="companyTableCellData">{row.nickName ? row.nickName : "N/A"}</td>
+                <td className="companyTableCellData">{row.credits}</td>
+
+                <td className="companyTableCellDataButtonContainer">
+                  <div className="companyTableCellDataButtons" >
+                    <button className="companyTableCellDataButtonContainerButton deleteButton upper" onClick={() => handleDeleteModal(row.userName)}>Delete</button>
+                    <button className="companyTableCellDataButtonContainerButton upper" onClick={() => handleTransactions(row.userName)}>Transactions</button>
+                    <button className="companyTableCellDataButtonContainerButton upper" style={{ backgroundColor: row.activeStatus ? "green" : "red" }} onClick={() => handleActiveInactive(row)}>{`${row.activeStatus ? "Enabled" : "Disabled"}`} </button>
+                  </div>
+                  <div className="companyTableCellDataButtons " >
+                    {row.designation == "master" && < button className="companyTableCellDataButtonContainerButton lower" onClick={() => addCredits(row, -1)}>Redeem Credits</button>}
+                    <button className="companyTableCellDataButtonContainerButton lower " onClick={() => handleUpdatePassword(row)}>Update Password</button>
+                    {row.designation == "master" && <button className="companyTableCellDataButtonContainerButton lower" onClick={() => addCredits(row, 1)}>Add Credits</button>}
+
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </table>
+        </div>
       </div>
 
       {isAddClient &&
@@ -342,15 +410,15 @@ const CompanyDashboard = () => {
             <div className="closeButton" onClick={() => setOpenHistory(false)}>&times;</div>
             <table className="historyTable">
               <tr className="tableCell">
-              <td className="tableCellData">Credior</td>
+                <td className="tableCellData">Credior</td>
                 <td className="tableCellData">Debitor</td>
                 <td className="tableCellData">Credits</td>
                 <td className="tableCellData">Time</td>
               </tr>
               {history.map((row) => (
                 <tr className="tableCell" key={row.name}>
-                   <td className="tableCellData">{row.creditor}</td>
-                   <td className="tableCellData">{row.debitor}</td>
+                  <td className="tableCellData">{row.creditor}</td>
+                  <td className="tableCellData">{row.debitor}</td>
                   <td className="tableCellData">{row.credit}</td>
                   <td className="tableCellData">{`${row.createdAtDate},${row.createdAtTime}`}</td>
                 </tr>
@@ -360,63 +428,6 @@ const CompanyDashboard = () => {
         </div>}
 
 
-      <div className="userTable">
-        <div className='options'>
-          <div>
-            <label for="start">Start date:</label>
-            <input type="date" value={startDate} min="2018-01-01" max={currentDate} onChange={(e)=>setStartDate(e.target.value)}/>
-          </div>
-          <div>
-            <label for="start">End date:</label>
-            <input type="date" value={endDate} min="2019-01-01" max={currentDate} onChange={(e)=>setEndDate(e.target.value)}/>
-          </div>
-          <div>
-            <select value={selectedHirarchy} onChange={(e)=>setSelectedHirarchy(e.target.value)}>
-              <option value="all">All</option>
-              <option value="master">Master</option>
-              <option value="distributer">Distributer</option>
-              <option value="subDistributer">Sub Distributer</option>
-              <option value="store">Store</option>
-              <option value="users">Users</option>
-            </select>
-          </div>
-          <button onClick={()=>searchTransactionInPeriod()}>Search</button>
-        </div>
-
-        <div>
-          <table className="table" >
-            <tr className="tableCell">
-              <th className="tableCellHeader">User Name</th>
-              <th className="tableCellHeader">NickName</th>
-              <th className="tableCellHeader">Credits</th>
-              <th className="tableCellHeader">Buttons</th>
-            </tr>
-
-            {filteredClient.map((row, index) => (
-              <tr className="tableCell" key={row.name}>
-                <td className="tableCellDataUserName" onClick={() => handleCompanyClick(row)}>{row.userName}</td>
-                <td className="tableCellData">{row.nickName ? row.nickName : "N/A"}</td>
-                <td className="tableCellData">{row.credits}</td>
-
-                <td className="tableCellDataButtonContainer">
-                  <div className="tableCellDataButtons" >
-                    <button className="tableCellDataButtonContainerButton deleteButton" onClick={() => handleDeleteModal(row.userName)}>Delete</button>
-                    <button className="tableCellDataButtonContainerButton" onClick={() => handleTransactions(row.userName)}>Transactions</button>
-                    {row.designation == "master" && <button className="tableCellDataButtonContainerButton" onClick={() => addCredits(row, 1)}>Add Credits</button>}
-                    <button className="tableCellDataButtonContainerButton" style={{ backgroundColor: row.activeStatus ? "green" : "red" }} onClick={() => handleActiveInactive(row)}>{`${row.activeStatus ? "Enabled" : "Disabled"}`} </button>
-                  </div>
-                  <div className="tableCellDataButtons" >
-                    {row.designation == "master" && < button className="tableCellDataButtonContainerButton bigButtons" onClick={() => addCredits(row, -1)}>Redeem Credits</button>}
-                    <button className="tableCellDataButtonContainerButton bigButtons" onClick={() => handleUpdatePassword(row)}>Update Password</button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </table>
-
-        </div>
-
-      </div>
     </div>
   )
 }
