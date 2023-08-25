@@ -217,6 +217,8 @@ const CompanyDashboard = () => {
     if (!user.userName)
       navigate("/")
     getClientList()
+    setStartDate("2018-01-01")
+    setEndDate(currentDate)
   }, [])
 
   return (
