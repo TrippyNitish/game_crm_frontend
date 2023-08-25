@@ -72,10 +72,7 @@ const Login = () => {
     }
 
     const checkTokenExist = async () => {
-        console.log("checkExistToken")
-
         const cookie = Cookies.get('userToken');
-        console.log("checkTokenBalu", cookie)
         const url = `${baseUrl}/login`
 
         const response = await axios.post(url, { cookie })
@@ -84,7 +81,7 @@ const Login = () => {
             const token = response.data.token
             Cookies.set('userToken', token);
             dispatch(setUsers(response.data))
-            console.log("ressssa", response.data)
+
             if (response.data.designation == 'company')
                 navigate(`/dashboard/company`)
             else
@@ -94,7 +91,6 @@ const Login = () => {
     }
 
     useEffect(() => {
-        dispatch(setUsers({}))
         checkTokenExist()
     }, [])
 

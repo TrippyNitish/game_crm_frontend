@@ -89,6 +89,7 @@ const deleteClientApi = async (details) => {
 }
 
 
+
 const transactionsApi = async(details)=>{
   const cookieValue = Cookies.get('userToken');
 
@@ -97,4 +98,10 @@ const transactionsApi = async(details)=>{
   
 }
 
-export {baseUrl, getClientListApi,activeStatusApi,getRealTimeCreditsApi,updatePasswordApi, addClientApi, updateCreditApi, deleteClientApi,transactionsApi }
+const getTransactionsOnBasisOfPeriodApi = async(details)=>{
+  const cookieValue = Cookies.get('userToken');
+  const response = await axios.post(`${baseUrl}/getTransanctionOnBasisOfDatePeriod`, {...details,designation:"company",cookie:cookieValue});
+    return response
+}
+
+export {baseUrl, getClientListApi,getTransactionsOnBasisOfPeriodApi,activeStatusApi,getRealTimeCreditsApi,updatePasswordApi, addClientApi, updateCreditApi, deleteClientApi,transactionsApi }

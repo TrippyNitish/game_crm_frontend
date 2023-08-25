@@ -7,9 +7,7 @@ const baseUrl = 'http://localhost:5000'
 const getClientListApi = async (details) => {
   const response = await axios.post(`${baseUrl}/getClientList`, details)
 
-  if (response.status == 201) 
-    alert(response.data.error)  
-  else if (response.status == 200) 
+  if (response.status == 200) 
     return response
   else if (response.status == 204) 
     return alert("You are now Inactive Please contact your")
@@ -73,7 +71,6 @@ const updatePasswordApi = async ( details) => {
   }
 }
 
-
 const deleteClientApi = async (details) => {
   const cookieValue = Cookies.get('userToken');
 
@@ -88,7 +85,6 @@ const deleteClientApi = async (details) => {
   }
 }
 
-
 const transactionsApi = async(details)=>{
   const cookieValue = Cookies.get('userToken');
 
@@ -96,5 +92,11 @@ const transactionsApi = async(details)=>{
     return response
   
 }
+const getTransactionsOnBasisOfPeriodApi = async(details)=>{
+  const cookieValue = Cookies.get('userToken');
+  const response = await axios.post(`${baseUrl}/getTransanctionOnBasisOfDatePeriod`, {...details,cookie:cookieValue});
+    return response
+}
 
-export {baseUrl, getClientListApi,activeStatusApi,getRealTimeCreditsApi,updatePasswordApi, addClientApi, updateCreditApi, deleteClientApi,transactionsApi }
+
+export {baseUrl, getClientListApi,getTransactionsOnBasisOfPeriodApi,activeStatusApi,getRealTimeCreditsApi,updatePasswordApi, addClientApi, updateCreditApi, deleteClientApi,transactionsApi }

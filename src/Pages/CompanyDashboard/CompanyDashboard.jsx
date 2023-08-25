@@ -5,6 +5,7 @@ import { setClientsList, setCredits, setUsers } from '../../redux/reducers';
 import Cookies from 'js-cookie';
 import './companyDashboard.css'
 import { addClientApi, deleteClientApi, getClientListApi, activeStatusApi, getRealTimeCreditsApi, transactionsApi, updateCreditApi, updatePasswordApi } from '../../services/api';
+import { getTransactionsOnBasisOfPeriodApi } from '../../services/companyApi';
 
 
 const CompanyDashboard = () => {
@@ -38,6 +39,7 @@ const CompanyDashboard = () => {
   const [addOrRedeemeCredits, setAddOrRedeemeCredits] = useState(1)
   const [initialcredits, setInitialCredits] = useState(0)
   var [filteredClient, setFilteredClient] = useState([])
+  const [selectedHirarchy,setSelectedHirarchy]=useState("all")
 
   const currentDate = new Date().toISOString().split('T')[0];
 
@@ -77,8 +79,6 @@ const CompanyDashboard = () => {
     const response = await getRealTimeCreditsApi({ userName: user.userName })
     dispatch(setCredits(response.data.credits))
   }
-
-  setInterval(getRealTimeCredits, 200000)
 
   const addClient = async () => {
     if (details.clientUserName.length < 4) {
@@ -203,8 +203,10 @@ const CompanyDashboard = () => {
     setFilteredClient(response.data.clientList)
   }
 
-  const seachTransactionInPeriod=()=>{
-
+  const searchTransactionInPeriod=async ()=>{
+    const response = await getTransactionsOnBasisOfPeriodApi({startDate,endDate,hirarchyName:selectedHirarchy,userName:user.userName})
+    setHistory(response.data.transactionsFiltered)
+    setOpenHistory(true)
   }
 
   useEffect(() => {
@@ -340,11 +342,15 @@ const CompanyDashboard = () => {
             <div className="closeButton" onClick={() => setOpenHistory(false)}>&times;</div>
             <table className="historyTable">
               <tr className="tableCell">
+              <td className="tableCellData">Credior</td>
+                <td className="tableCellData">Debitor</td>
                 <td className="tableCellData">Credits</td>
                 <td className="tableCellData">Time</td>
               </tr>
               {history.map((row) => (
                 <tr className="tableCell" key={row.name}>
+                   <td className="tableCellData">{row.creditor}</td>
+                   <td className="tableCellData">{row.debitor}</td>
                   <td className="tableCellData">{row.credit}</td>
                   <td className="tableCellData">{`${row.createdAtDate},${row.createdAtTime}`}</td>
                 </tr>
@@ -358,13 +364,23 @@ const CompanyDashboard = () => {
         <div className='options'>
           <div>
             <label for="start">Start date:</label>
-            <input type="date" id="start" name="trip-start" value={startDate} min="2018-01-01" max={currentDate} onChange={(e)=>setStartDate(e.target.value)}/>
+            <input type="date" value={startDate} min="2018-01-01" max={currentDate} onChange={(e)=>setStartDate(e.target.value)}/>
           </div>
           <div>
             <label for="start">End date:</label>
-            <input type="date" id="start" name="trip-start" value={endDate} min="2019-01-01" max={currentDate} onChange={(e)=>setEndDate(e.target.value)}/>
+            <input type="date" value={endDate} min="2019-01-01" max={currentDate} onChange={(e)=>setEndDate(e.target.value)}/>
           </div>
-          <button onClick={()=>seachTransactionInPeriod()}>Search</button>
+          <div>
+            <select value={selectedHirarchy} onChange={(e)=>setSelectedHirarchy(e.target.value)}>
+              <option value="all">All</option>
+              <option value="master">Master</option>
+              <option value="distributer">Distributer</option>
+              <option value="subDistributer">Sub Distributer</option>
+              <option value="store">Store</option>
+              <option value="users">Users</option>
+            </select>
+          </div>
+          <button onClick={()=>searchTransactionInPeriod()}>Search</button>
         </div>
 
         <div>

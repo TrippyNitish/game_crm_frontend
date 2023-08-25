@@ -5,6 +5,7 @@ import { setClientsList, setCredits, setUsers } from '../../redux/reducers';
 import Cookies from 'js-cookie';
 import './dashboard.css'
 import { addClientApi, deleteClientApi, getClientListApi,activeStatusApi, getRealTimeCreditsApi, transactionsApi, updateCreditApi, updatePasswordApi } from '../../services/companyApi';
+import { getTransactionsOnBasisOfPeriodApi } from '../../services/api';
 
 
 const Dashboard = () => {
@@ -29,13 +30,16 @@ const Dashboard = () => {
   const [openDelete, setOpenDelete] = useState(false)
   const [openHistory, setOpenHistory] = React.useState(false);
   const [isUpdatePassword, setIsUpdatePassword] = useState(false)
-
+  var [startDate,setStartDate]=useState("")
+  var [endDate,setEndDate]=useState(Date.now) 
   const [details, setDetails] = useState(emptyDetails)
   const [history, setHistory] = useState([])
   var [userNameVar, setuserNameVar] = useState("")
   const [addOrRedeemeCredits, setAddOrRedeemeCredits] = useState(1)
   const [initialcredits, setInitialCredits] = useState(0)
   var [filteredClient, setFilteredClient] = useState([])
+
+  const currentDate = new Date().toISOString().split('T')[0];
 
   const handleAddClient = () => {
     setIsAddClient(true)
@@ -186,6 +190,12 @@ const Dashboard = () => {
       getClientList()
   }
  
+  const searchTransactionInPeriod=async ()=>{
+    const response = await getTransactionsOnBasisOfPeriodApi({startDate,endDate,designation:user.designation,userName:user.userName})
+    console.log("resHis",response.data)
+    setHistory(response.data.transactionsFiltered)
+    setOpenHistory(true)
+  }
 
   const filterClients = (searchText) => {
     setFilteredClient(
@@ -327,11 +337,15 @@ const Dashboard = () => {
             <div className="closeButton" onClick={() => setOpenHistory(false)}>&times;</div>
             <table className="historyTable">
               <tr className="tableCell">
+              <td className="tableCellData">Creditor</td>
+                <td className="tableCellData">Debitor</td>
                 <td className="tableCellData">Credits</td>
                 <td className="tableCellData">Time</td>
               </tr>
               {history.map((row) => (
                 <tr className="tableCell" key={row.name}>
+                  <td className="tableCellData">{row.creditor}</td>
+                  <td className="tableCellData">{row.debitor}</td>
                   <td className="tableCellData">{row.credit}</td>
                   <td className="tableCellData">{row.createdAt}</td>
                 </tr>
@@ -341,6 +355,19 @@ const Dashboard = () => {
         </div>}
 
       <div className="userTable">
+      <div className='options'>
+          <div>
+            <label for="start">Start date:</label>
+            <input type="date" value={startDate} min="2018-01-01" max={currentDate} onChange={(e)=>setStartDate(e.target.value)}/>
+          </div>
+          <div>
+            <label for="start">End date:</label>
+            <input type="date" value={endDate} min="2019-01-01" max={currentDate} onChange={(e)=>setEndDate(e.target.value)}/>
+          </div>         
+          <button onClick={()=>searchTransactionInPeriod()}>Search</button>
+        </div>
+
+        <div>
         <table className="table" >
           <tr className="tableCell">
             <th className="tableCellHeader">User Name</th>
@@ -367,6 +394,7 @@ const Dashboard = () => {
             </tr>
           ))}
         </table>
+        </div>
       </div>
     </div>
   )

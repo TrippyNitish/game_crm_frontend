@@ -6,6 +6,7 @@ import CompanyDashboard from './Pages/CompanyDashboard/CompanyDashboard';
 
 function App() {
 
+  
   return (
     <>
       <div>
