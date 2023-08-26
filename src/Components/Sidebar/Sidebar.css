@@ -1,0 +1,45 @@
+.sidebar {
+    width: 200px;
+    top: 0;
+    transition: left 0.3s ease;
+  }
+  
+  .sidebar.open {
+    left: 0;
+  }
+  
+  .toggle-btn {
+    background-color: #444;
+    border: none;
+    color: #fff;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+  }
+  
+  .menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+  
+  .menu li {
+    padding: 10px;
+    color: #fff;
+    font-size: 16px;
+    border-bottom: 1px solid #555;
+  }
+  li:hover{
+    cursor: pointer;
+  }
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      left: -100%;
+    }
+  
+    .sidebar.open {
+      left: 0;
+    }
+  }
+  

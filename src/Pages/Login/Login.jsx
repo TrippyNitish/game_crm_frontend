@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
-import { setUsers } from '../redux/reducers';
 import Cookies from 'js-cookie';
-import { baseUrl } from '../services/api';
+import { baseUrl } from '../../services/api';
 import captchaImg from './captcha.jpg';
 import './Login.css'
+import { setUsers } from '../../redux/reducers';
 
 const Login = () => {
 
@@ -59,11 +59,8 @@ const Login = () => {
         else if (response.status == 200) {
             const token = response.data.token
             Cookies.set('userToken', token);
-            dispatch(setUsers(response.data))
-            if (response.data.designation == 'company')
-                navigate(`/dashboard/company`)
-            else
-                navigate(`/dashboard/user`)
+            dispatch(setUsers(response.data))          
+            navigate(`/dashboard/user`)
         }
 
     }
@@ -81,11 +78,7 @@ const Login = () => {
             const token = response.data.token
             Cookies.set('userToken', token);
             dispatch(setUsers(response.data))
-
-            if (response.data.designation == 'company')
-                navigate(`/dashboard/company`)
-            else
-                navigate(`/dashboard/user`)
+            navigate(`/dashboard/user`)
         }
         else return
     }

@@ -1,0 +1,37 @@
+.navBar{
+    background-color: rgb(212, 107, 253);
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+.navBarComponents{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+}
+.isSideBarButtonShow{
+    font-size: 30px;
+    cursor: pointer;
+}
+.navSideBarShown{
+    position: fixed;
+    width: 220px;
+    top:0;
+    left: 0;
+    height: 100%;
+    background-color: gray;
+    margin-top: 50px;
+    height:(100vh - 60px);
+}
+
+@media  (min-width:768px){ 
+    .isSideBarButtonShow{
+       display: none;
+    }
+    .navSideBarShown{
+        display: none;
+    }
+}
