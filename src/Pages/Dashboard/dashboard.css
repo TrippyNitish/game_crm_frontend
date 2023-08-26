@@ -53,10 +53,13 @@
 
 .thirdCompnayUserViewColumn{
   margin-top: 50px;
+  overflow: auto;
 }
 
 .companyTable{
     width: 100%;
+    max-height: calc(100vh - 120px);
+    overflow: scroll;
 }
 
 .companyTableCell{

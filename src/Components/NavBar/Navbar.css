@@ -19,12 +19,14 @@
 .navSideBarShown{
     position: fixed;
     width: 220px;
-    top:0;
+    top:8px;
     left: 0;
     height: 100%;
     background-color: gray;
     margin-top: 50px;
-    height:(100vh - 60px);
+    height:(100vh - 70px);
+    box-shadow: 5px 3px 9px rgba(0, 0, 0, 0.3);
+
 }
 
 @media  (min-width:768px){ 

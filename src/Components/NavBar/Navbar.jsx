@@ -13,7 +13,7 @@ const NavBar = () => {
 
     const user = useSelector((state) => state.user)
 
-    const [isSideBarShow,setIsSideBarShow]=useState(false)
+    const [isSideBarShow,setIsSideBarShow]=useState(true)
 
     const handleBarButtonClick=()=>{
         setIsSideBarShow(!isSideBarShow)

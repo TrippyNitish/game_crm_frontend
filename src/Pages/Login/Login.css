@@ -1,31 +1,85 @@
+.loginPage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(to bottom, #daf1fa, #789ef0);
+
+}
+
+.loginForm{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .captcha-container {
-  height: 50px;
-  width: 150px;
+  height: 100%;
+  width: 140px;
   position: relative;
 }
 
-.captcha-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+
+.captcha {
+  margin-left: 20px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  
+}
+
+.userLoginFields {
+  width: 280px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 8px;
+  margin-top: 20px;
+  padding: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
 
 }
 
-.captcha-text {
-  color: rgb(115, 172, 145);
-  position: absolute;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  top:-12px;
-  font-size: 30px;
-  letter-spacing: 2px; /* Adds space between characters */
-  transform-origin: center bottom;
-  left: -40px;
-  transform: translate(50%, -50%) scale(1.2, 0.8) skewX(-15deg);
-  z-index: 1;
-  user-select: none;
-  -webkit-user-select: none;
-  /* For Safari */
-  -moz-user-select: none;
-  /* For Firefox */
-  -ms-user-select: none;
+.loginInput {
+  font-size: 12px;
+  border: none;
+  margin-left: 5px;
+  padding: 5px;
+  border-left: 1px solid gray;
+  outline: none;
+}
+.userLoginFields:focus,
+.userLoginFields:hover {
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+.captchaInput { 
+  margin-left: -20px;
+  width: 150px !important;
+  height: 30px !important;
+  font-size: 15px;
+  border-start-start-radius: 5px;
+  border-end-start-radius: 5px;
+  padding: 4px;
+  border: 0px solid white;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+
+}
+#canv{
+  width: 130px;
+  height: 30px;
+  border-end-end-radius: 5px;
+  border-start-end-radius: 5px;
+
+}
+.loginButton{
+  width: 280px;
+  background-color: rgb(57, 57, 240);
+}
+.loginButton:hover{
+  background-color: rgb(121, 121, 238);
 }

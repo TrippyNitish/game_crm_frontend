@@ -75,7 +75,7 @@ const AddClient = () => {
         <div className="addUserView">
             <NavBar />
             <div style={{ display: "flex", height: "100%" }}>
-                <div className='isSideBarShow' style={{ height: "100%", backgroundColor: 'gray' ,width:"250px"}}>
+                <div className='isSideBarShow' style={{height: "100%", backgroundColor: 'gray' ,width:"250px"}}>
                     <Sidebar />
                 </div>
                 <div className='addUserForm'>
@@ -99,15 +99,9 @@ const AddClient = () => {
                         <div>Initial Credit : 0</div>
                         <button type='submit' onClick={() => addClient()}> AddClient</button>
                     </form>
-
-
                 </div>
-
             </div>
-
         </div>
-
     )
 }
-
 export default AddClient

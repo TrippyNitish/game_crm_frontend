@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 import { baseUrl } from '../../services/api';
-import captchaImg from './captcha.jpg';
+import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 import './Login.css'
+import PersonIcon from '@mui/icons-material/Person';
 import { setUsers } from '../../redux/reducers';
+import KeyIcon from '@mui/icons-material/Key';
 
 const Login = () => {
 
@@ -14,35 +16,15 @@ const Login = () => {
     const dispatch = useDispatch();
 
     const [details, setDetails] = useState({})
-
-    const [user, setUser] = useState({
-        username: ""
-    });
-
-    const characters = 'abc123';
-
-    function generateString(length) {
-        let result = '';
-        const charactersLength = characters.length;
-        for (let i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
-    }
-
-    const captcha = generateString(6) // Function called here and save in captcha variable
-
-    let handleChange = (e) => {
-        let name = e.target.name;
-        let value = e.target.value;
-        user[name] = value;
-        setUser(user);
-    }
-
+    var [captcha, setCaptcha] = useState("")
+     
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (captcha != user.username) {
-            alert("Invalid Captcha")
+
+        if (validateCaptcha(captcha) == true) {
+        }
+        else {
+            alert('Captcha Does Not Match');
             return
         }
 
@@ -59,7 +41,7 @@ const Login = () => {
         else if (response.status == 200) {
             const token = response.data.token
             Cookies.set('userToken', token);
-            dispatch(setUsers(response.data))          
+            dispatch(setUsers(response.data))
             navigate(`/dashboard/user`)
         }
 
@@ -83,41 +65,32 @@ const Login = () => {
         else return
     }
 
+
     useEffect(() => {
         checkTokenExist()
+        loadCaptchaEnginge(6,'wheat','white');
     }, [])
 
     return (
         <>
-            <div style={{ width: "100vw", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <label>
-                        UserName : {` `}
-                        <input type='text' onChange={(e) => handleChangeFormDetails({ userName: e.target.value.trim() })} />
-                    </label>
-                    <br />
-                    <label>
-                        Password : {` `}
-                        <input type='text' onChange={(e) => handleChangeFormDetails({ password: e.target.value.trim() })} />
-                    </label>
-                    <br />
-                    <div >
-                        <div className="captcha-container">
-                            <h4 id="captcha" className="captcha-text" disabled={true}>
-                                {captcha}
-                            </h4>
-                            <img src={captchaImg} className="captcha-image" />
-                        </div>
+            <div className='loginPage'>
+                <form className='loginForm' onSubmit={(e) => handleSubmit(e)}>
+                    <PersonIcon style={{ fontSize: "150px", color: "white" }} />
 
-                        <div >
-                            <input type="text" placeholder="Enter Captcha" name="username" onChange={handleChange} autocomplete="off" style={{ width: "40%" }}
-                            />
-                        </div>
-
+                    <div className='userLoginFields'>
+                        <PersonIcon />
+                        <input className="loginInput" type='text' placeholder='User Name' onChange={(e) => handleChangeFormDetails({ userName: e.target.value.trim() })} />
+                    </div>
+                    <div className='userLoginFields'>
+                        <KeyIcon />
+                        <input type='text' className="loginInput" placeholder='Password' onChange={(e) => handleChangeFormDetails({ password: e.target.value.trim() })} />
+                    </div>
+                    <div className='captcha' >
+                        <input className='captchaInput' type="text" placeholder="Enter Captcha" name="username" onChange={(e) => setCaptcha(e.target.value)} autocomplete="off" style={{ width: "40%" }} />
+                        <LoadCanvasTemplate />
                     </div>
                     <br />
-                    <button type='submit'>Login</button>
-
+                    <button className='loginButton' type='submit'>Login</button>
                 </form>
             </div>
         </>
