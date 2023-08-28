@@ -41,6 +41,21 @@
     gap: 10px;
 }
 
+.adminStructure{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+.selectedAccount{
+    display: flex;
+    gap: 20px;
+}
+.modifyAccountInfoButtons{
+    padding: 10PX;
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
 .firstCompnayUserViewColumn{
     display: flex;
     justify-content: center;

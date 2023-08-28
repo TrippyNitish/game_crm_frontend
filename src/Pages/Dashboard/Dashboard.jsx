@@ -6,6 +6,7 @@ import './Dashboard.css'
 import { deleteClientApi, getClientListApi, activeStatusApi, transactionsApi, updateCreditApi, updatePasswordApi } from '../../services/api';
 import Sidebar from '../../Components/Sidebar/SideBar';
 import NavBar from '../../Components/NavBar/Navbar';
+import UpdateUser from '../../Components/Update User/UpdateUser';
 
 
 const Dashboard = () => {
@@ -22,7 +23,11 @@ const Dashboard = () => {
     userName: "",
     password: "",
     clientNickName: "",
-    credits: 0
+    credits: 0,
+    lastLogin: "",
+    timeZone: "abc",
+    activeStatus: "abc",
+    designation: "abc",
   }
 
   const [isUpdateCredit, setIsUpdateCredit] = React.useState(false);
@@ -35,8 +40,7 @@ const Dashboard = () => {
   const [addOrRedeemeCredits, setAddOrRedeemeCredits] = useState(1)
   const [initialcredits, setInitialCredits] = useState(0)
   var [filteredClient, setFilteredClient] = useState([])
-
-
+  var [selelctedAccount, setSelectedAccount] = useState(emptyDetails)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -90,6 +94,10 @@ const Dashboard = () => {
   }
 
   const handleDelete = async () => {
+    if (!selelctedAccount.userName) {
+      alert("Please select an Account")
+      return
+    }
     setOpenDelete(false)
     const response = await deleteClientApi({ clientUserName: userNameVar, userName: user.userName, designation: user.designation })
     if (response)
@@ -97,28 +105,43 @@ const Dashboard = () => {
   }
 
   const handleDeleteModal = (userNameVar) => {
+    if (!selelctedAccount.userName) {
+      alert("Please select an Account")
+      return
+    }
     setuserNameVar(userNameVar)
     setOpenDelete(true)
   }
 
   const getClientList = async () => {
-    console.log("getClientListFun")
     const response = await getClientListApi({ userName: user.userName })
     dispatch(setClientsList(response.data.clientList))
   }
 
   const handleTransactions = async (userName) => {
+    if (!selelctedAccount.userName) {
+      alert("Please select an Account")
+      return
+    }
     const response = await transactionsApi({ clientUserName: userName, userName: user.userName })
     setHistory(response.data)
     setOpenHistory(true)
   }
 
   const handleUpdatePassword = (items) => {
+    if (!selelctedAccount.userName) {
+      alert("Please select an Account")
+      return
+    }
     setIsUpdatePassword(true)
     setDetails(items)
   }
 
   const addCredits = (items, addOrRedeeme) => {
+    if (!selelctedAccount.userName) {
+      alert("Please select an Account")
+      return
+    }
     setIsUpdateCredit(true)
     setAddOrRedeemeCredits(addOrRedeeme)
     setDetails(items)
@@ -127,7 +150,10 @@ const Dashboard = () => {
   }
 
   const handleActiveInactive = async (items) => {
-    console.log("activity", items.activeStatus)
+    if (!selelctedAccount.userName) {
+      alert("Please select an Account")
+      return
+    }
     const response = await activeStatusApi({ clientUserName: items.userName, userName: user.userName, activeStatus: items.activeStatus })
     if (response)
       getClientList()
@@ -140,7 +166,7 @@ const Dashboard = () => {
   }
 
   const handleCompanyClick = async (row) => {
-    if(user.designation=="company"){
+    if (user.designation == "company") {
       const response = await getClientListApi({ userName: row.userName })
       setFilteredClient(response.data.clientList)
     }
@@ -148,6 +174,12 @@ const Dashboard = () => {
 
   useEffect(() => {
     setFilteredClient(clientList)
+    const selectedUser = clientList.find(items => items.userName == selelctedAccount.userName)
+    if (!selectedUser) {
+      setSelectedAccount(emptyDetails)
+      return
+    }
+    setSelectedAccount({ ...selelctedAccount, ...selectedUser })
   }, [clientList])
 
   useEffect(() => {
@@ -161,21 +193,80 @@ const Dashboard = () => {
       <NavBar />
       <div style={{ display: "flex", flexDirection: "row", height: "100%" }}>
         <div className='isSideBarShow'>
-            <Sidebar/>
+          <Sidebar />
         </div>
 
         <div className="companyUserView">
-          <div className='firstCompnayUserViewColumn'>
-            <input className='search' type='text' placeholder='Search' onChange={(e) => filterClients(e.target.value)} />
-          </div>
+          {/* //////////////////////////////////////////////////////////////////////////// */}
+          <div className='adminStructure'>
+            <div className='firstCompnayUserViewColumn'>
+              <input className='search' type='text' placeholder='Search Account' onChange={(e) => filterClients(e.target.value)} />
+            </div>
+            <div className='selectedAccount'>
+              <div className='acccountName'>
+                <div>
+                  Account
+                </div>
+                <div>
+                  {selelctedAccount.userName ? selelctedAccount.userName : "N/A"}
+                </div>
 
+              </div>
+              <div className='balance'>
+                <div>
+                  Credits
+                </div>
+                <div>
+                  {selelctedAccount.credits}
+                </div>
+              </div>
+              <div className='lastLogin'>
+                <div>
+                  Last Login
+                </div>
+                <div>
+                  {selelctedAccount.lastLogin}
+                </div>
+              </div>
+              <div className='timeZone'>
+                <div>
+                  Time Zone
+                </div>
+                <div>
+                  {selelctedAccount.timeZone}
+                </div>
+              </div>
+              <div className='activeStatus'>
+                <div>
+                  Active Status
+                </div>
+                <div>
+                  <button className="companyTableCellDataButtonContainerButton upper" style={{ backgroundColor: selelctedAccount.activeStatus ? "green" : "red" }} onClick={() => handleActiveInactive(selelctedAccount)}>{`${selelctedAccount.activeStatus ? "Enabled" : "Disabled"}`} </button>
+                </div>
+              </div>
+            </div>
+            <div className='modifyAccountInfoButtons'>
+              <button className="companyTableCellDataButtonContainerButton deleteButton upper" onClick={() => handleDeleteModal(selelctedAccount.userName)}>Delete</button>
+              {!(user.designation == 'company' && selelctedAccount.designation != "master") && < button className="companyTableCellDataButtonContainerButton lower" onClick={() => addCredits(selelctedAccount, 1)}>Recharge</button>}
+              {!(user.designation == 'company' && selelctedAccount.designation != "master") && < button className="companyTableCellDataButtonContainerButton lower" onClick={() => addCredits(selelctedAccount, -1)}>Redeem</button>}
+              <button className="companyTableCellDataButtonContainerButton lower " onClick={() => handleUpdatePassword(selelctedAccount)}>Update Password</button>
+              <button className="companyTableCellDataButtonContainerButton upper" onClick={() => handleTransactions(selelctedAccount.userName)}>Transactions</button>
+            </div>
+          </div>
+          {/* //////////////////////////////////////////////////////////////////////////// */}
           <div className='thirdCompnayUserViewColumn'>
             <table className="companyTable" >
               <tr className="companyTableCell">
                 <th className="companyTableCellHeader">User Name</th>
                 <th className="companyTableCellHeader">NickName</th>
                 <th className="companyTableCellHeader">Credits</th>
-                <th className="companyTableCellHeader">Buttons</th>
+                <th className="companyTableCellHeader">Management</th>
+                <th className="companyTableCellHeader">TimeZone</th>
+                <th className="companyTableCellHeader">Level</th>
+                <th className="companyTableCellHeader">Status</th>
+                <th className="companyTableCellHeader">Total Recharged</th>
+                <th className="companyTableCellHeader">Total Recharged</th>
+                <th className="companyTableCellHeader">Holding Percentage</th>
               </tr>
 
               {filteredClient.map((row, index) => (
@@ -185,18 +276,16 @@ const Dashboard = () => {
                   <td className="companyTableCellData">{row.credits}</td>
 
                   <td className="companyTableCellDataButtonContainer">
-                    <div className="companyTableCellDataButtons" >
-                      <button className="companyTableCellDataButtonContainerButton deleteButton upper" onClick={() => handleDeleteModal(row.userName)}>Delete</button>
-                      <button className="companyTableCellDataButtonContainerButton upper" onClick={() => handleTransactions(row.userName)}>Transactions</button>
-                      <button className="companyTableCellDataButtonContainerButton upper" style={{ backgroundColor: row.activeStatus ? "green" : "red" }} onClick={() => handleActiveInactive(row)}>{`${row.activeStatus ? "Enabled" : "Disabled"}`} </button>
-                    </div>
-                    <div className="companyTableCellDataButtons " >
-                      {row.designation == "master" && < button className="companyTableCellDataButtonContainerButton lower" onClick={() => addCredits(row, -1)}>Redeem Credits</button>}
-                      <button className="companyTableCellDataButtonContainerButton lower " onClick={() => handleUpdatePassword(row)}>Update Password</button>
-                      {row.designation == "master" && <button className="companyTableCellDataButtonContainerButton lower" onClick={() => addCredits(row, 1)}>Add Credits</button>}
-
-                    </div>
+                    <button className="companyTableCellDataButtonContainerButton lower " onClick={() => setSelectedAccount({ ...selelctedAccount, ...row })}>Update</button>
                   </td>
+                  <td className="companyTableCellData">{row.timeZone ? row.timeZone : "EST"}</td>
+                  <td className="companyTableCellData">{row.designation}</td>
+                  <td className="companyTableCellData">{row.activeStatus ? "Active" : "In Active"}</td>
+                  <td className="companyTableCellData">{row.totalRecharged}</td>
+                  <td className="companyTableCellData">{row.totalRedeemed}</td>
+                  <td className="companyTableCellData">{row.totalRedeemed > (-1)*row.totalRecharged ? "":"-"}{(((-1)*row.totalRedeemed/row.totalRecharged)*100).toFixed(2)}%</td>
+
+
                 </tr>
               ))}
             </table>
