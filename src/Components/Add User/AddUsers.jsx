@@ -71,7 +71,7 @@ const AddClient = () => {
         master: "Distributer",
         distributer: "SubDistributer",
         subDistributer: "Store",
-        store: "User"
+        store: "Player"
     }
 
 

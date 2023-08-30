@@ -18,7 +18,7 @@ const Sidebar = () => {
     master: "Distributer",
     distributer: "SubDistributer",
     subDistributer: "Store",
-    store: "User"
+    store: "Player"
 }
   
   return (
