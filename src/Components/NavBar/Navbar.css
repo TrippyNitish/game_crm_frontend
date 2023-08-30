@@ -36,4 +36,35 @@
     .navSideBarShown{
         display: none;
     }
+ 
+}
+
+
+@media  (max-width:768){ 
+    .navBarComponents{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;  
+        padding: 8px;
+  
+    }
+}
+
+@media  (max-width:500){ 
+    .navBarComponents{
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        font-size: 5px;    
+    }
+    .navBar{
+         padding: 7px;
+    }
+    .navBarButtons{
+        padding: 2px;
+    }
+    .deleteButton{
+        padding: 5px;
+    }
 }

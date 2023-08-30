@@ -43,39 +43,42 @@ const TransactionDetails = () => {
     }, [])
 
     return (
-        <div className='transactonView'>
+        <div className='transactonPage'>
             <NavBar />
-            <div style={{ display: "flex", height: "100%", width: "100%" }}>
+            <div className='transactionWindow'>
                 <div className='isSideBarShow' style={{ height: "100%", backgroundColor: 'gray' }}>
                     <Sidebar />
                 </div>
-                <div>
-                    <div className=''>
-                        <div>
-                            <label for="start">Start date: {' '}</label>
-                            <input type="date" value={startDate} min="2018-01-01" max={currentDate} onChange={(e) => setStartDate(e.target.value)} />
+                <div className='transactionView'>
+                    <div className='transactionFilterView'>
+                        <div className='dateSelection'>
+                            <div>
+                                <label for="start">Start date: {' '}</label>
+                                <input type="date" value={startDate} min="2018-01-01" max={currentDate} onChange={(e) => setStartDate(e.target.value)} />
+                            </div>
+                            <div >
+                                <label for="start">End date:{' '}</label>
+                                <input type="date" value={endDate} min="2019-01-01" max={currentDate} onChange={(e) => setEndDate(e.target.value)} />
+                            </div>
                         </div>
-                        <div>
-                            <label for="start">End date:{' '}</label>
-                            <input type="date" value={endDate} min="2019-01-01" max={currentDate} onChange={(e) => setEndDate(e.target.value)} />
+
+                        <div className='filterSelection'>
+                            {user.designation == "company" && <div className=''> <label>Select Type : {' '}</label>
+                                <select value={selectedHirarchy} onChange={(e) => setSelectedHirarchy(e.target.value)}>
+                                    <option value="all">All</option>
+                                    <option value="master">Master</option>
+                                    <option value="distributer">Distributer</option>
+                                    <option value="subDistributer">Sub Distributer</option>
+                                    <option value="store">Store</option>
+                                    <option value="users">Users</option>
+                                </select>
+                            </div>}
+                            <button onClick={() => searchTransactionInPeriod()}>Search</button>
                         </div>
+
                     </div>
 
-                    <div>
-                        {user.designation == "company" && <div className=''> <label>Select Type : {' '}</label>
-                            <select value={selectedHirarchy} onChange={(e) => setSelectedHirarchy(e.target.value)}>
-                                <option value="all">All</option>
-                                <option value="master">Master</option>
-                                <option value="distributer">Distributer</option>
-                                <option value="subDistributer">Sub Distributer</option>
-                                <option value="store">Store</option>
-                                <option value="users">Users</option>
-                            </select>
-                        </div>}
-                        <button onClick={() => searchTransactionInPeriod()}>Search</button>
-                    </div>
-
-                    <div>
+                    <div className='transactionTable'>
                         <table className="transactionHistoryTable">
                             <tr className="transactionTableCell">
                                 <td className="transactionTableCellDataHeader">Credior</td>

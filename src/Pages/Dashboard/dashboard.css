@@ -1,8 +1,15 @@
+.dashBoardbody {
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 60px);
 
-.companyDashboardBody{
+}
+
+.companyDashboardBody {
     background-color: rgb(204, 204, 204);
 }
-.closeButton{
+
+.closeButton {
     color: black;
     position: absolute;
     font-size: 30px;
@@ -11,52 +18,72 @@
     z-index: 200px;
     cursor: pointer;
 }
-.closeButton:hover{
+
+
+
+.closeButton:hover {
     cursor: pointer;
 }
 
-.form{
+.form {
     margin-top: 20px;
 }
 
-.historyTable{
-    width: 100%;
-    background-color: rgb(255, 255, 255);
-    color: black;
-    padding-top: 40px;
-    position: absolute;
+.addUserForm {
+    background-color: white;
     overflow: auto;
-    max-height: 400px;
 }
 
-.companyUserView{
-    /* margin-top: 75px; */
-    padding: 10px;
+.companyUserView {
+    padding: 20px;
     width: 100%;
-     /* overflow: hidden; */
     display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: center;
     gap: 10px;
+    overflow: auto;
 }
 
-.adminStructure{
+.adminStructure {
     background-color: white;
     display: flex;
+    padding: 20px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
     flex-direction: column;
+
 }
-.selectedAccount{
+
+.selectedAccount {
     display: flex;
+    justify-content: space-between;
     gap: 20px;
+    color: rgb(214, 0, 0);
+    width: 100%;
+    padding: 20px;
 }
-.modifyAccountInfoButtons{
+
+.selectedAccount>div {
+    border-left: 1px solid rgb(146, 145, 145);
+    padding: 10px;
+
+}
+
+.acccountNameUpper {
+    padding-bottom: 5px;
+    font-size: large;
+    color: rgb(0, 0, 0);
+}
+
+.modifyAccountInfoButtons {
     padding: 10PX;
     display: flex;
     justify-content: space-between;
     gap: 5px;
 }
-.firstCompnayUserViewColumn{
+
+.firstCompnayUserViewColumn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -66,41 +93,40 @@
 }
 
 
-.thirdCompnayUserViewColumn{
-  margin-top: 50px;
-  overflow: auto;
+.thirdCompnayUserViewColumn {
+    width: 100%;
+    margin-top: 50px;
+    overflow: auto;
+    background-color: rgb(150, 147, 147);
+    height: 100%;
 }
 
-.companyTable{
+.companyTable {
     width: 100%;
     max-height: calc(100vh - 120px);
-    overflow: scroll;
 }
 
-.companyTableCell{
+.companyTableCell {
     text-align: center;
     color: black;
     background-color: white;
 }
 
 
-.companyTableCellHeader{
+.companyTableCellHeader {
     padding: 10px;
 }
 
-.companyTableCellData{
-}
+.companyTableCellData {}
 
-.companyTableCellDataUserName{
+.companyTableCellDataUserName {}
 
-}
-
-.companyTableCellDataUserName:hover{
+.companyTableCellDataUserName:hover {
     cursor: pointer;
     background-color: #dfeffa;
 }
 
-.companyTableCellDataButtonContainer{
+.companyTableCellDataButtonContainer {
     padding: 5px;
     display: flex;
     justify-content: center;
@@ -108,7 +134,7 @@
     flex-direction: row;
 }
 
-.companyTableCellDataButtons{
+.companyTableCellDataButtons {
     padding: 5px;
     display: flex;
     justify-content: center;
@@ -118,26 +144,27 @@
 }
 
 
-.companyTableCellDataButtonContainerButton{
+.companyTableCellDataButtonContainerButton {
     font-size: 15px;
     padding: 10px;
     padding-left: 15px;
 }
 
-.companyTableCellDataButtons{   
+.companyTableCellDataButtons {}
+
+.secondCompnayUserViewColumn {
+    padding: 20px;
 
 }
-.secondCompnayUserViewColumn{
-   padding: 20px;
 
+.secondCompnayUserViewColumnComponents {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px
 }
-.secondCompnayUserViewColumnComponents{
-   display: flex;    
-   justify-content: center;
-   align-items: center;
-   gap:20px 
-}
-.firstCompnayUserViewColumn{
+
+.firstCompnayUserViewColumn {
     width: 90%;
     display: flex;
     justify-content: center;
@@ -145,72 +172,116 @@
     gap: 50px;
     padding: 10px;
 }
-.secondCompnayUserViewColumn{
+
+.secondCompnayUserViewColumn {
     width: 90%;
     flex-direction: row;
 }
-.thirdCompnayUserViewColumn{
+
+.thirdCompnayUserViewColumn {
     margin-top: 0px;
-  }
+}
 
 
 @media (max-width: 850px) {
-    .companyUserView{
+    .companyUserView {
         padding: 2px;
     }
+
+    .adminStructure {
+        background-color: white;
+        display: flex;
+        width: 100%;
+        padding: 5px;
+        border-radius: 5px;
+        flex-direction: column;
+        font-size: 20px;
+
+    }
+
+    .selectedAccount {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        color: rgb(214, 0, 0);
+        width: 100%;
+        padding: 15px;
+    }
+
+    .selectedAccount>div {
+        border-left: 1px solid rgb(146, 145, 145);
+        padding: 10px;
+
+    }
+
+    .acccountNameUpper {
+        padding-bottom: 3px;
+        font-size: 15px;
+        color: rgb(0, 0, 0);
+    }
+
     .companyUserTable {
         width: 100%;
 
     }
-    .companyTable{
+
+    .companyTable {
         width: 100%;
     }
-    
-    .companyTableCellDataButtonContainer{
+
+    .companyTableCellDataButtonContainer {
         flex-direction: column;
         gap: 0px;
         margin: 0px;
         padding: 0px;
     }
-    
-    .companyTableCellHeader{
+
+    .companyTableCellHeader {
         padding-top: 6px;
         padding-left: 0px;
         font-size: 17px;
         min-width: 90px;
     }
-    .companyTableCell{
+
+    .companyTableCell {
         padding: 5px;
-        
-    }
-    .companyTableCellData{
-        font-size: 1.8rem;
-    }
-    .companyTableCellDataButtons{
-        gap:5px
+
     }
 
-    .companyTableCellDataUserName{
+    .companyTableCellData {
+        font-size: 1.8rem;
+    }
+
+    .companyTableCellDataButtons {
+        gap: 5px
+    }
+
+    .companyTableCellDataUserName {
         font-size: 15px;
     }
-    .companyTableCellData{
+
+    .companyTableCellData {
         font-size: 12px;
     }
-    .secondCompnayUserViewColumn{
+
+    .secondCompnayUserViewColumn {
         padding: 20px;
         gap: 10px;
-     
-     }
-    .companyTableCellDataButtonContainerButton{
+
+    }
+
+    .companyTableCellDataButtonContainerButton {
         font-size: 15px;
         padding: 8px;
     }
-    .upper{
+
+    .upper {
         min-width: 117px;
         padding: 5px;
-        
+
     }
-    .firstCompnayUserViewColumn{
+
+    .firstCompnayUserViewColumn {
         width: 90%;
         display: flex;
         justify-content: center;
@@ -218,75 +289,88 @@
         gap: 50px;
         padding: 10px;
     }
-    .secondCompnayUserViewColumn{
+
+    .secondCompnayUserViewColumn {
         width: 90%;
         flex-direction: column;
     }
-    .thirdCompnayUserViewColumn{
+
+    .thirdCompnayUserViewColumn {
         margin-top: 0px;
-      }
-    
-    
+    }
+
+
 }
 
 @media (max-width: 670px) {
-    .companyUserView{
+    .companyUserView {
         padding: 2px;
     }
+
+    
     .companyUserTable {
         width: 100%;
 
     }
-    .companyTable{
+
+    .companyTable {
         width: 100%;
     }
-    
-    .companyTableCellDataButtonContainer{
+
+    .companyTableCellDataButtonContainer {
         flex-direction: column;
         gap: 0px;
         margin: 0px;
         padding: 0px;
     }
-    
-    .companyTableCellHeader{
+
+    .companyTableCellHeader {
         padding-top: 6px;
         padding-left: 0px;
         font-size: smaller;
         min-width: 60px;
 
     }
-    .companyTableCell{
+
+    .companyTableCell {
         padding: 2px;
-        
-    }
-    .companyTableCellData{
-        font-size: smaller;
-    }
-    .companyTableCellDataButtons{
-        gap:5px;
+
     }
 
-    .companyTableCellDataUserName{
+    .companyTableCellData {
+        font-size: smaller;
+    }
+
+    .companyTableCellDataButtons {
+        gap: 5px;
+    }
+
+    .companyTableCellDataUserName {
         font-size: 15px;
     }
-    .companyTableCellData{
+
+    .companyTableCellData {
         font-size: 15px;
     }
-    .secondCompnayUserViewColumn{
+
+    .secondCompnayUserViewColumn {
         padding: 20px;
         gap: 10px;
-     
-     }
-    .companyTableCellDataButtonContainerButton{
+
+    }
+
+    .companyTableCellDataButtonContainerButton {
         font-size: 15px;
         padding: 7px;
     }
-    .upper{
+
+    .upper {
         min-width: 96px;
         padding: 5px;
-        
+
     }
-    .firstCompnayUserViewColumn{
+
+    .firstCompnayUserViewColumn {
         width: 94%;
         display: flex;
         justify-content: center;
@@ -295,142 +379,199 @@
         background-color: white;
         padding: 10px;
     }
-    .secondCompnayUserViewColumn{
+
+    .secondCompnayUserViewColumn {
         flex-direction: column;
         width: 94%;
     }
-    .thirdCompnayUserViewColumn{
+
+    .thirdCompnayUserViewColumn {
         margin-top: 5px;
-      }   
-    
+    }
+
 }
+
 @media (max-width: 510px) {
-    .companyUserView{
+    .companyUserView {
         padding: 2px;
     }
+
+    
+    .adminStructure {
+        background-color: white;
+        display: flex;
+        width: 100%;
+        border-radius: 5px;
+        flex-direction: column;
+        font-size: 10px;
+
+    }
+
+    .selectedAccount {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        color: rgb(214, 0, 0);
+        width: 100%;
+    }
+
+    .selectedAccount>div {
+        border-left: 1px solid rgb(146, 145, 145);
+        padding: 10px;
+
+    }
+
+    .acccountNameUpper {
+        padding-bottom: 3px;
+        font-size: 10px;
+        color: rgb(0, 0, 0);
+    }
+
     .companyUserTable {
         width: 100%;
 
     }
-    .companyTable{
+
+    .companyTable {
         width: 100%;
     }
-    
-    .companyTableCellDataButtonContainer{
+
+    .companyTableCellDataButtonContainer {
         flex-direction: column;
         gap: 0px;
         margin: 0px;
         padding: 0px;
     }
-    
-    .companyTableCellHeader{
+
+    .companyTableCellHeader {
         padding-top: 6px;
         padding-left: 0px;
         font-size: smaller;
         min-width: 50px;
 
     }
-    .companyTableCell{
+
+    .companyTableCell {
         padding: 2px;
-        
-    }
-    .companyTableCellData{
-        font-size: smaller;
-    }
-    .companyTableCellDataButtons{
-        gap:2px
+
     }
 
-    .companyTableCellDataUserName{
+    .companyTableCellData {
+        font-size: smaller;
+    }
+
+    .companyTableCellDataButtons {
+        gap: 2px
+    }
+
+    .companyTableCellDataUserName {
         font-size: 12px;
     }
-    .companyTableCellData{
+
+    .companyTableCellData {
         font-size: 12px;
     }
-    .secondCompnayUserViewColumn{
+
+    .secondCompnayUserViewColumn {
         padding: 20px;
         gap: 10px;
-     
-     }
-    .companyTableCellDataButtonContainerButton{
+
+    }
+
+    .companyTableCellDataButtonContainerButton {
         font-size: 9px;
         padding: 5px;
     }
-    .upper{
+
+    .upper {
         min-width: 72px;
         padding: 5px;
-        
+
     }
-    .firstCompnayUserViewColumn{
-        width: 95%;       
+
+    .firstCompnayUserViewColumn {
+        width: 95%;
         padding: 10px;
     }
-    .secondCompnayUserViewColumn{
+
+    .secondCompnayUserViewColumn {
         width: 95%;
         flex-direction: column;
     }
-    .thirdCompnayUserViewColumn{
+
+    .thirdCompnayUserViewColumn {
         margin-top: 0px;
-      }
-    
-    
+    }
+
+
 }
+
 @media (max-width: 400px) {
-    .companyUserView{
+    .companyUserView {
         padding: 2px;
     }
+
     .companyUserTable {
         width: 100%;
 
     }
-    .companyTable{
+
+    .companyTable {
         width: 100%;
     }
-    
-    .companyTableCellDataButtonContainer{
+
+    .companyTableCellDataButtonContainer {
         flex-direction: column;
         gap: 0px;
         margin: 0px;
         padding: 0px;
     }
-    
-    .companyTableCellHeader{
+
+    .companyTableCellHeader {
         padding-top: 6px;
         padding-left: 0px;
         font-size: smaller;
     }
-    .companyTableCell{
+
+    .companyTableCell {
         padding: 2px;
-        
-    }
-    .companyTableCellData{
-        font-size: smaller;
-    }
-    .companyTableCellDataButtons{
-        gap:2px
+
     }
 
-    .companyTableCellDataUserName{
+    .companyTableCellData {
+        font-size: smaller;
+    }
+
+    .companyTableCellDataButtons {
+        gap: 2px
+    }
+
+    .companyTableCellDataUserName {
         font-size: 12px;
     }
-    .companyTableCellData{
+
+    .companyTableCellData {
         font-size: 12px;
     }
-    .secondCompnayUserViewColumn{
+
+    .secondCompnayUserViewColumn {
         padding: 20px;
         gap: 10px;
-     
-     }
-    .companyTableCellDataButtonContainerButton{
+
+    }
+
+    .companyTableCellDataButtonContainerButton {
         font-size: 8px;
         padding: 2px;
     }
-    .upper{
+
+    .upper {
         min-width: 58px;
         padding: 5px;
-        
+
     }
-    .firstCompnayUserViewColumn{
+
+    .firstCompnayUserViewColumn {
         width: 100%;
         display: flex;
         justify-content: center;
@@ -439,12 +580,12 @@
         background-color: white;
         padding: 10px;
     }
-   
-    .thirdCompnayUserViewColumn{
+
+    .thirdCompnayUserViewColumn {
         margin-top: 0px;
-      }
-    
-    
+    }
+
+
 }
 
 button {
@@ -455,19 +596,21 @@ button {
     color: white;
     border-radius: 5px;
     cursor: pointer;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* The shadow effect */
-    transition: box-shadow 0.3s ease; /* Transition for the shadow effect */
-  }
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    /* The shadow effect */
+    transition: box-shadow 0.3s ease;
+    /* Transition for the shadow effect */
+}
 
-  button:hover{
+button:hover {
     background-color: #4d6676;
-  }
+}
 
-.deleteButton{
+.deleteButton {
     background-color: tomato;
 }
 
-.deleteButton:hover{
+.deleteButton:hover {
     background-color: rgb(216, 73, 48);
 }
 
@@ -482,9 +625,9 @@ button {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-  }
-  
-  .modal-content {
+}
+
+.modal-content {
     position: relative;
     background-color: white;
     padding: 20px;
@@ -493,29 +636,47 @@ button {
     max-width: 400px;
     width: 100%;
     text-align: center;
-  }
+}
 
-  .modal-content-history {
+.modal-content-history {
     position: relative;
     background-color: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    width: 100%;
-    max-height: 80vh;
+    width: 500px;
+    height: 500px;
     text-align: center;
-  }
-  
+    overflow: auto;
+}
 
-.isSideBarShow{
+
+.isSideBarShow {
     background-color: gray;
     font-size: 30px;
     height: 100vh;
 }
 
-@media  (max-width:767px){ 
-    .isSideBarShow{
-       display: none;
+@media (max-width:767px) {
+    .isSideBarShow {
+        display: none;
+    }    
+}
+@media (max-width:450) {
+   
+    .modal-content-history {
+       font-size: 12px;
+       width: 94vw;
     }
+
+    
+}
+.dashboardHistoryTableCellData{
+    background-color: #ddfcee;
+    padding: 5px;
+}
+.dashboardHistoryTableCellDataHeader{
+    background-color: #83c7f1;
+    padding: 4px;
+
 }

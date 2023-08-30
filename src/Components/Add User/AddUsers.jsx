@@ -66,6 +66,15 @@ const AddClient = () => {
     }
 
 
+    const clientDesignation = {
+        company: "Master",
+        master: "Distributer",
+        distributer: "SubDistributer",
+        subDistributer: "Store",
+        store: "User"
+    }
+
+
     useEffect(() => {
         if (!user.userName)
             navigate("/")
@@ -75,29 +84,41 @@ const AddClient = () => {
         <div className="addUserView">
             <NavBar />
             <div style={{ display: "flex", height: "100%" }}>
-                <div className='isSideBarShow' style={{height: "100%", backgroundColor: 'gray' ,width:"250px"}}>
+                <div className='isSideBarShow' style={{ height: "100%", backgroundColor: 'gray', width: "250px" }}>
                     <Sidebar />
                 </div>
                 <div className='addUserForm'>
                     <form className="form" onSubmit={(e) => handleSubmit(e)}>
-                        <label>
-                            {`UserName * : `}
-                            <input type='text' value={details.clientUserName} onChange={(e) => handleChangeFormDetails({ clientUserName: e.target.value.trim() })} />
-                        </label>
-                        <label>
-                            {`NickName : `}
-                            <input type='text' value={details.clientNickName} onChange={(e) => handleChangeFormDetails({ clientNickName: e.target.value.trim() })} />
-                        </label>
-                        <label>
-                            {`Password * : `}
-                            <input type='text' value={details.password} onChange={(e) => handleChangeFormDetails({ password: e.target.value.trim() })} />
-                        </label>
-                        <label>
-                            {`Confirm Password * : `}
-                            <input type='text' value={details.confirmPassword} onChange={(e) => handleChangeFormDetails({ confirmPassword: e.target.value.trim() })} />
-                        </label>
+                        <div>
+                            <div>
+                                {`UserName * : `}
+
+                            </div>
+                            <input className='addClientFiled' type='text' value={details.clientUserName} onChange={(e) => handleChangeFormDetails({ clientUserName: e.target.value.trim() })} />
+                        </div>
+                        <div>
+                            <div>
+                                {`NickName : `}
+
+                            </div>
+                            <input className='addClientFiled' type='text' value={details.clientNickName} onChange={(e) => handleChangeFormDetails({ clientNickName: e.target.value.trim() })} />
+                        </div>
+                        <div>
+                            <div>
+                                {`Password * : `}
+
+                            </div>
+                            <input className='addClientFiled' type='text' value={details.password} onChange={(e) => handleChangeFormDetails({ password: e.target.value.trim() })} />
+                        </div>
+                        <div>
+                            <div>
+                                {`Confirm Password * : `}
+
+                            </div>
+                            <input className='addClientFiled' type='text' value={details.confirmPassword} onChange={(e) => handleChangeFormDetails({ confirmPassword: e.target.value.trim() })} />
+                        </div>
                         <div>Initial Credit : 0</div>
-                        <button type='submit' onClick={() => addClient()}> AddClient</button>
+                        <button type='submit' onClick={() => addClient()}>Add {clientDesignation[user.designation]}</button>
                     </form>
                 </div>
             </div>

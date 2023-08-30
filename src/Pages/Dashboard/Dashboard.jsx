@@ -191,7 +191,7 @@ const Dashboard = () => {
   return (
     <div className="companyDashboardBody">
       <NavBar />
-      <div style={{ display: "flex", flexDirection: "row", height: "100%" }}>
+      <div className='dashBoardbody'>
         <div className='isSideBarShow'>
           <Sidebar />
         </div>
@@ -200,11 +200,11 @@ const Dashboard = () => {
           {/* //////////////////////////////////////////////////////////////////////////// */}
           <div className='adminStructure'>
             <div className='firstCompnayUserViewColumn'>
-              <input className='search' type='text' placeholder='Search Account' onChange={(e) => filterClients(e.target.value)} />
+              <input type='text' style={{width:"250px",height:"30px"}} placeholder='Search Account' onChange={(e) => filterClients(e.target.value)} />
             </div>
             <div className='selectedAccount'>
               <div className='acccountName'>
-                <div>
+                <div className='acccountNameUpper'>
                   Account
                 </div>
                 <div>
@@ -213,7 +213,7 @@ const Dashboard = () => {
 
               </div>
               <div className='balance'>
-                <div>
+                <div className='acccountNameUpper'>
                   Credits
                 </div>
                 <div>
@@ -221,7 +221,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className='lastLogin'>
-                <div>
+                <div className='acccountNameUpper'>
                   Last Login
                 </div>
                 <div>
@@ -229,7 +229,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className='timeZone'>
-                <div>
+                <div className='acccountNameUpper'>
                   Time Zone
                 </div>
                 <div>
@@ -237,7 +237,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className='activeStatus'>
-                <div>
+                <div className='acccountNameUpper'>
                   Active Status
                 </div>
                 <div>
@@ -257,33 +257,33 @@ const Dashboard = () => {
           <div className='thirdCompnayUserViewColumn'>
             <table className="companyTable" >
               <tr className="companyTableCell">
+                <th className="companyTableCellHeader">Management</th>
                 <th className="companyTableCellHeader">User Name</th>
                 <th className="companyTableCellHeader">NickName</th>
                 <th className="companyTableCellHeader">Credits</th>
-                <th className="companyTableCellHeader">Management</th>
                 <th className="companyTableCellHeader">TimeZone</th>
-                <th className="companyTableCellHeader">Level</th>
                 <th className="companyTableCellHeader">Status</th>
                 <th className="companyTableCellHeader">Total Recharged</th>
-                <th className="companyTableCellHeader">Total Recharged</th>
+                <th className="companyTableCellHeader">Total Redeemed</th>
                 <th className="companyTableCellHeader">Holding Percentage</th>
+                <th className="companyTableCellHeader">Last Login</th>
+
               </tr>
 
               {filteredClient.map((row, index) => (
                 <tr className="companyTableCell" key={row.name}>
-                  <td className="companyTableCellDataUserName" onClick={() => handleCompanyClick(row)}>{row.userName}</td>
-                  <td className="companyTableCellData">{row.nickName ? row.nickName : "N/A"}</td>
-                  <td className="companyTableCellData">{row.credits}</td>
-
                   <td className="companyTableCellDataButtonContainer">
                     <button className="companyTableCellDataButtonContainerButton lower " onClick={() => setSelectedAccount({ ...selelctedAccount, ...row })}>Update</button>
                   </td>
+                  <td className="companyTableCellDataUserName" onClick={() => handleCompanyClick(row)}>{row.userName}</td>
+                  <td className="companyTableCellData">{row.nickName ? row.nickName : "N/A"}</td>
+                  <td className="companyTableCellData">{row.credits}</td>
                   <td className="companyTableCellData">{row.timeZone ? row.timeZone : "EST"}</td>
-                  <td className="companyTableCellData">{row.designation}</td>
                   <td className="companyTableCellData">{row.activeStatus ? "Active" : "In Active"}</td>
                   <td className="companyTableCellData">{row.totalRecharged}</td>
-                  <td className="companyTableCellData">{row.totalRedeemed}</td>
-                  <td className="companyTableCellData">{row.totalRedeemed > (-1)*row.totalRecharged ? "":"-"}{(((-1)*row.totalRedeemed/row.totalRecharged)*100).toFixed(2)}%</td>
+                  <td className="companyTableCellData">{(-1) * row.totalRedeemed}</td>
+                  <td className="companyTableCellData">{row.totalRedeemed > (-1) * row.totalRecharged ? "" : "-"}{(((row.totalRecharged + row.totalRedeemed) / row.totalRecharged) * 100).toFixed(2)}%</td>
+                  <td className="companyTableCellData">{row.lastLogin?row.lastLogin:"N/A"}</td>
 
 
                 </tr>
@@ -359,23 +359,27 @@ const Dashboard = () => {
       {openHistory &&
         <div className="modal-overlay">
           <div className="modal-content-history">
-            <div className="closeButton" onClick={() => setOpenHistory(false)}>&times;</div>
-            <table className="historyTable">
-              <tr className="tableCell">
-                <td className="tableCellData">Credior</td>
-                <td className="tableCellData">Debitor</td>
-                <td className="tableCellData">Credits</td>
-                <td className="tableCellData">Time</td>
-              </tr>
-              {history.map((row) => (
-                <tr className="tableCell" key={row.name}>
-                  <td className="tableCellData">{row.creditor}</td>
-                  <td className="tableCellData">{row.debitor}</td>
-                  <td className="tableCellData">{row.credit}</td>
-                  <td className="tableCellData">{`${row.createdAtDate},${row.createdAtTime}`}</td>
-                </tr>
-              ))}
-            </table>
+            <div className='dashboardHistoryTableWindow'>
+              <div className="closeButton" onClick={() => setOpenHistory(false)}>&times;</div>
+              <div>
+                <table className="dashboardHistoryTable">
+                  <tr className="dashboardHistoryTableCellHeader">
+                    <td className="dashboardHistoryTableCellDataHeader">Credior</td>
+                    <td className="dashboardHistoryTableCellDataHeader">Debitor</td>
+                    <td className="dashboardHistoryTableCellDataHeader">Credits</td>
+                    <td className="dashboardHistoryTableCellDataHeader">Time</td>
+                  </tr>
+                  {history.map((row) => (
+                    <tr className="dashboardHistoryTableCell" key={row.name}>
+                      <td className="dashboardHistoryTableCellData">{row.creditor}</td>
+                      <td className="dashboardHistoryTableCellData">{row.debitor}</td>
+                      <td className="dashboardHistoryTableCellData">{row.credit}</td>
+                      <td className="dashboardHistoryTableCellData">{`${row.createdAtDate},${row.createdAtTime}`}</td>
+                    </tr>
+                  ))}
+                </table>
+              </div>
+            </div>
           </div>
         </div>}
     </div>

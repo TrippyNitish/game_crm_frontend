@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
 import './Navbar.css'
 import Sidebar from '../Sidebar/SideBar';
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
 const NavBar = () => {
@@ -40,7 +40,8 @@ const NavBar = () => {
             </div>
             <div> Game </div>
             <div className="navBarComponents">
-                <div className="welcome">{`Welcome : ${user.userName}`}  </div>
+                <AccountCircleIcon/>
+                <div className="welcome">{` ${user.userName}(${user.designation})`}  </div>
                 <button className="navBarButtons deleteButton" onClick={(e) => handleLogOut(e)}>LogOut</button>
             </div>
         </div>
