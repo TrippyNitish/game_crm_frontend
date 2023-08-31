@@ -36,7 +36,7 @@ const NavBar = () => {
                 <Sidebar/>
             </div>}
             <div className="navBarComponents">
-               {user.designation!="company"  && <div>{`Credits : ${user.credits != null ? user.credits : "Infinite"}`}  </div>}
+               {user.designation!="company"  && <div>{`Credits : ${user.credits != null ? user.credits : "Infinit"}`}  </div>}
             </div>
             <div> Game </div>
             <div className="navBarComponents">
