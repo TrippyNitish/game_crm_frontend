@@ -376,7 +376,7 @@ const Dashboard = () => {
                       <td className="dashboardHistoryTableCellData">{row.credit}</td>
                       <td className="dashboardHistoryTableCellData">{`${row.createdAtDate},${row.createdAtTime}`}</td>
                     </tr>
-                  ))}
+                  )).reverse()}
                 </table>
               </div>
             </div>
