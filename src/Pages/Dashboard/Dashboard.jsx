@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { setClientsList, setCredits } from '../../redux/reducers';
 import './dashboard.css'
-import { deleteClientApi, getClientListApi, activeStatusApi, transactionsApi, updateCreditApi, updatePasswordApi } from '../../services/api';
+import { deleteClientApi, getClientListApi, activeStatusApi, transactionsApi, updateCreditApi, updatePasswordApi, getRealTimeCreditsApi } from '../../services/api';
 import Sidebar from '../../Components/Sidebar/SideBar';
 import NavBar from '../../Components/NavBar/Navbar';
 import UpdateUser from '../../Components/Update User/UpdateUser';
-
 
 const Dashboard = () => {
 
@@ -46,6 +45,12 @@ const Dashboard = () => {
     e.preventDefault()
   }
 
+  const updateCredits= async()=>{
+    const res = await getRealTimeCreditsApi({userName:user.userName})
+     dispatch(setCredits(res.data.credits))  
+     return  
+  }
+  
   const handleChangeFormDetails = (formdata) => {
     setDetails({ ...details, ...formdata })
   }
@@ -81,6 +86,8 @@ const Dashboard = () => {
     }
     setIsUpdateCredit(false)
     setDetails(emptyDetails)
+    updateCredits()
+    return
   }
 
   const updatePassword = async () => {
@@ -116,6 +123,7 @@ const Dashboard = () => {
   const getClientList = async () => {
     const response = await getClientListApi({ userName: user.userName })
     dispatch(setClientsList(response.data.clientList))
+    return
   }
 
   const handleTransactions = async (userName) => {
@@ -137,7 +145,9 @@ const Dashboard = () => {
     setDetails(items)
   }
 
-  const addCredits = (items, addOrRedeeme) => {
+  const addCredits = async (items, addOrRedeeme) => {
+    await getClientList();
+    await updateCredits();
     if (!selelctedAccount.userName) {
       alert("Please select an Account")
       return
