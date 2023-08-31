@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 import { baseUrl } from '../../services/api';
-import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
+import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import './Login.css'
 import PersonIcon from '@mui/icons-material/Person';
 import { setUsers } from '../../redux/reducers';
