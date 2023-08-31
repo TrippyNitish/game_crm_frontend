@@ -79,14 +79,14 @@ const Login = () => {
 
                     <div className='userLoginFields'>
                         <PersonIcon />
-                        <input className="loginInput" type='text' placeholder='User Name' onChange={(e) => handleChangeFormDetails({ userName: e.target.value.trim() })} />
+                        <input required autoComplete='off' className="loginInput" type='text' placeholder='User Name' onChange={(e) => handleChangeFormDetails({ userName: e.target.value.trim() })} />
                     </div>
                     <div className='userLoginFields'>
                         <KeyIcon />
-                        <input type='text' className="loginInput" placeholder='Password' onChange={(e) => handleChangeFormDetails({ password: e.target.value.trim() })} />
+                        <input required  autoComplete='off' type='text' className="loginInput" placeholder='Password' onChange={(e) => handleChangeFormDetails({ password: e.target.value.trim() })} />
                     </div>
                     <div className='captcha' >
-                        <input className='captchaInput' type="text" placeholder="Enter Captcha" name="username" onChange={(e) => setCaptcha(e.target.value)} autocomplete="off" style={{ width: "40%" }} />
+                        <input required  autoComplete='off'  className='captchaInput' type="text" placeholder="Enter Captcha" name="username" onChange={(e) => setCaptcha(e.target.value)} autocomplete="off" style={{ width: "40%" }} />
                         <LoadCanvasTemplate />
                     </div>
                     <br />

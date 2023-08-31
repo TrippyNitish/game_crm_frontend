@@ -1,8 +1,8 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-// const baseUrl = 'https://crmserver-8jed.onrender.com'
-const baseUrl = 'http://localhost:5000'
+const baseUrl = import.meta.env.VITE_SERVERURL
+// const baseUrl = 'http://localhost:5000'
 
 const getClientListApi = async (details) => {
   const response = await axios.post(`${baseUrl}/getClientList`, details)
