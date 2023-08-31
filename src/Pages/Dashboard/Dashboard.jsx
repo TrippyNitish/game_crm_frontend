@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { setClientsList, setCredits } from '../../redux/reducers';
-import './Dashboard.css'
+import './dashboard.css'
 import { deleteClientApi, getClientListApi, activeStatusApi, transactionsApi, updateCreditApi, updatePasswordApi } from '../../services/api';
 import Sidebar from '../../Components/Sidebar/SideBar';
 import NavBar from '../../Components/NavBar/Navbar';
