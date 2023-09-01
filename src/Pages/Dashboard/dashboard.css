@@ -295,6 +295,9 @@
         flex-direction: column;
     }
 
+    .selectedAccount {
+        font-size: 15px;
+    }
     .thirdCompnayUserViewColumn {
         margin-top: 0px;
     }
@@ -384,7 +387,9 @@
         flex-direction: column;
         width: 94%;
     }
-
+    .selectedAccount {
+        font-size: 12px;
+    }
     .thirdCompnayUserViewColumn {
         margin-top: 5px;
     }
@@ -668,7 +673,6 @@ button:hover {
        font-size: 12px;
        width: 94vw;
     }
-
     
 }
 .dashboardHistoryTableCellData{
@@ -680,3 +684,12 @@ button:hover {
     padding: 4px;
 
 }
+
+.paginationContainer{
+    width: 100%;
+    background-color: white;
+    display: flex;
+    padding: 5px;
+    justify-content: center;
+}
+

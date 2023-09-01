@@ -13,20 +13,20 @@ const Sidebar = () => {
     navigate(route)
   }
 
-  const clientDesignation = {
-    company: "Master",
-    master: "Distributer",
-    distributer: "SubDistributer",
-    subDistributer: "Store",
-    store: "Player"
-}
+//   const clientDesignation = {
+//     company: "Master",
+//     master: "Distributer",
+//     distributer: "SubDistributer",
+//     subDistributer: "Store",
+//     store: "Player"
+// }
   
   return (
     <div className='sidebar'>
       
       <ul className="menu">
         <li onClick={() => handleRouteMovement("/dashboard/user")}>Dashboard</li>
-        <li onClick={() => handleRouteMovement("/addClient")}>Add {clientDesignation[userDesignation]}</li>
+        {/* <li onClick={() => handleRouteMovement("/addClient")}>Add {clientDesignation[userDesignation]}</li> */}
         <li onClick={() => handleRouteMovement("/transactionDetails")}>Transactions</li>
       </ul>
     </div>

@@ -3,17 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { setClientsList, setCredits } from '../../redux/reducers';
 import './dashboard.css'
-import { deleteClientApi, getClientListApi, activeStatusApi, transactionsApi, updateCreditApi, updatePasswordApi, getRealTimeCreditsApi } from '../../services/api';
+import { deleteClientApi, getClientListApi, activeStatusApi, transactionsApi, updateCreditApi, updatePasswordApi, getRealTimeCreditsApi, addClientApi } from '../../services/api';
 import Sidebar from '../../Components/Sidebar/SideBar';
 import NavBar from '../../Components/NavBar/Navbar';
-import UpdateUser from '../../Components/Update User/UpdateUser';
+import Pagination from '@mui/material/Pagination';
 
 const Dashboard = () => {
 
   const navigate = useNavigate()
-
-  useSelector((state) => console.log("stt", state))
-
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user)
   const clientList = useSelector((state) => state.clientList)
@@ -24,15 +21,16 @@ const Dashboard = () => {
     clientNickName: "",
     credits: 0,
     lastLogin: "",
-    timeZone: "abc",
-    activeStatus: "abc",
-    designation: "abc",
+    timeZone: "EST",
+    activeStatus: "",
+    designation: "",
   }
 
   const [isUpdateCredit, setIsUpdateCredit] = React.useState(false);
   const [openDelete, setOpenDelete] = useState(false)
   const [openHistory, setOpenHistory] = React.useState(false);
   const [isUpdatePassword, setIsUpdatePassword] = useState(false)
+  const [isAddClientModalOpen, setIsClientPopModalOpen] = useState(false)
   const [details, setDetails] = useState(emptyDetails)
   const [history, setHistory] = useState([])
   var [userNameVar, setuserNameVar] = useState("")
@@ -40,17 +38,20 @@ const Dashboard = () => {
   const [initialcredits, setInitialCredits] = useState(0)
   var [filteredClient, setFilteredClient] = useState([])
   var [selelctedAccount, setSelectedAccount] = useState(emptyDetails)
-
+  const [isReportOpen, setIsReportOpen] = useState(false)
+  const [page, setPage] = useState(1);
+  const [totalPage,setTotalPage]=useState(0)
+ 
   const handleSubmit = async (e) => {
     e.preventDefault()
   }
 
-  const updateCredits= async()=>{
-    const res = await getRealTimeCreditsApi({userName:user.userName})
-     dispatch(setCredits(res.data.credits))  
-     return  
+  const updateCredits = async () => {
+    const res = await getRealTimeCreditsApi({ userName: user.userName })
+    dispatch(setCredits(res.data.credits))
+    return
   }
-  
+
   const handleChangeFormDetails = (formdata) => {
     setDetails({ ...details, ...formdata })
   }
@@ -65,7 +66,6 @@ const Dashboard = () => {
         }
       }
     } else {
-
       if ((initialcredits - details.credits) < 0) {
         alert("Your client have not enough balance to redeeme")
         return
@@ -90,8 +90,51 @@ const Dashboard = () => {
     return
   }
 
-  const updatePassword = async () => {
+  function containsAtLeastTwoIntegers(password) {
+    let integerCount = 0;
+    for (let i = 0; i < password.length; i++) {
+      if (!isNaN(parseInt(password[i]))) {
+        integerCount++;
+        if (integerCount >= 2) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
+  const handleAddClientModal = () => {
+    setIsClientPopModalOpen(true)
+
+  }
+
+  const addClient = async () => {
+    if (details.clientUserName.length < 4) {
+      alert("Username should be atleast four characters")
+      return
+    }
+    if (details.password.length < 6) {
+      alert("Password can't be less than 6 characters")
+      return
+    }
+    if (!containsAtLeastTwoIntegers(details.password)) {
+      alert("Password contains at least two numbers")
+      return
+    }
+    if (details.password !== details.confirmPassword) {
+      alert("Password is not matching")
+      return
+    }
+    const response = await addClientApi({ ...details, userName: user.userName })
+    if (response)
+      getClientList();
+    setIsClientPopModalOpen(false)
+    setDetails(emptyDetails)
+    return
+  }
+
+
+  const updatePassword = async () => {
     if (details.password !== details.confirmNewpassword) {
       alert("Password is not matching")
       return
@@ -120,11 +163,19 @@ const Dashboard = () => {
     setOpenDelete(true)
   }
 
-  const getClientList = async () => {
-    const response = await getClientListApi({ userName: user.userName })
-    dispatch(setClientsList(response.data.clientList))
+  const getClientList = async (pageNumber=1) => {
+    const response = await getClientListApi({ userName: user.userName,pageNumber })
+    console.log("gtCl",response.data._doc.clientList)
+    dispatch(setClientsList(response.data._doc.clientList))
+    setTotalPage(response.data.totalPageCount)
     return
   }
+
+  const handlePageChange = (event, pageNumber) => {
+    setPage(pageNumber);
+    getClientList(pageNumber)
+    console.log("page",pageNumber)
+  };
 
   const handleTransactions = async (userName) => {
     if (!selelctedAccount.userName) {
@@ -181,6 +232,9 @@ const Dashboard = () => {
       setFilteredClient(response.data.clientList)
     }
   }
+  const handleReport = () => {
+    setIsReportOpen(true)
+  }
 
   useEffect(() => {
     setFilteredClient(clientList)
@@ -210,48 +264,31 @@ const Dashboard = () => {
           {/* //////////////////////////////////////////////////////////////////////////// */}
           <div className='adminStructure'>
             <div className='firstCompnayUserViewColumn'>
-              <input type='text' style={{width:"250px",height:"30px"}} placeholder='Search Account' onChange={(e) => filterClients(e.target.value)} />
+              <input type='text' style={{ width: "250px", height: "30px" }} placeholder='Search Account' onChange={(e) => filterClients(e.target.value)} />
+              <button onClick={() => handleAddClientModal()}>Add Client</button>
             </div>
             <div className='selectedAccount'>
               <div className='acccountName'>
-                <div className='acccountNameUpper'>
-                  Account
-                </div>
-                <div>
-                  {selelctedAccount.userName ? selelctedAccount.userName : "N/A"}
-                </div>
-
+                <div className='acccountNameUpper'> Account </div>
+                <div> {selelctedAccount.userName ? selelctedAccount.userName : "N/A"}  </div>
               </div>
               <div className='balance'>
-                <div className='acccountNameUpper'>
-                  Credits
-                </div>
-                <div>
-                  {selelctedAccount.credits}
-                </div>
+                <div className='acccountNameUpper'>Credits</div>
+                <div> {selelctedAccount.credits} </div>
               </div>
               <div className='lastLogin'>
-                <div className='acccountNameUpper'>
-                  Last Login
-                </div>
-                <div>
-                  {selelctedAccount.lastLogin}
-                </div>
+                <div className='acccountNameUpper'> Last Login </div>
+                <div> {selelctedAccount.lastLogin}</div>
               </div>
               <div className='timeZone'>
-                <div className='acccountNameUpper'>
-                  Time Zone
-                </div>
-                <div>
-                  {selelctedAccount.timeZone}
-                </div>
+                <div className='acccountNameUpper'>Time Zone </div>
+                <div>{selelctedAccount.timeZone} </div>
               </div>
               <div className='activeStatus'>
-                <div className='acccountNameUpper'>
-                  Active Status
-                </div>
-                <div>
-                  <button className="companyTableCellDataButtonContainerButton upper" style={{ backgroundColor: selelctedAccount.activeStatus ? "green" : "red" }} onClick={() => handleActiveInactive(selelctedAccount)}>{`${selelctedAccount.activeStatus ? "Enabled" : "Disabled"}`} </button>
+                <div className='acccountNameUpper'> Active Status  </div>
+                <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+                  <div >{selelctedAccount.activeStatus ? "Active" : "InActive"}</div>
+                  <div style={{ width: "15px", borderRadius: "7px", height: "15px", backgroundColor: selelctedAccount.activeStatus ? "green" : "red" }}></div>
                 </div>
               </div>
             </div>
@@ -261,6 +298,7 @@ const Dashboard = () => {
               {!(user.designation == 'company' && selelctedAccount.designation != "master") && < button className="companyTableCellDataButtonContainerButton lower" onClick={() => addCredits(selelctedAccount, -1)}>Redeem</button>}
               <button className="companyTableCellDataButtonContainerButton lower " onClick={() => handleUpdatePassword(selelctedAccount)}>Update Password</button>
               <button className="companyTableCellDataButtonContainerButton upper" onClick={() => handleTransactions(selelctedAccount.userName)}>Transactions</button>
+              <button className="companyTableCellDataButtonContainerButton upper" onClick={() => handleReport(selelctedAccount.userName)}>Report</button>
             </div>
           </div>
           {/* //////////////////////////////////////////////////////////////////////////// */}
@@ -273,11 +311,8 @@ const Dashboard = () => {
                 <th className="companyTableCellHeader">Credits</th>
                 <th className="companyTableCellHeader">TimeZone</th>
                 <th className="companyTableCellHeader">Status</th>
-                <th className="companyTableCellHeader">Total Recharged</th>
-                <th className="companyTableCellHeader">Total Redeemed</th>
-                <th className="companyTableCellHeader">Holding Percentage</th>
+                <th className="companyTableCellHeader">Login Times</th>
                 <th className="companyTableCellHeader">Last Login</th>
-
               </tr>
 
               {filteredClient.map((row, index) => (
@@ -289,16 +324,17 @@ const Dashboard = () => {
                   <td className="companyTableCellData">{row.nickName ? row.nickName : "N/A"}</td>
                   <td className="companyTableCellData">{row.credits}</td>
                   <td className="companyTableCellData">{row.timeZone ? row.timeZone : "EST"}</td>
-                  <td className="companyTableCellData">{row.activeStatus ? "Active" : "In Active"}</td>
-                  <td className="companyTableCellData">{row.totalRecharged}</td>
-                  <td className="companyTableCellData">{(-1) * row.totalRedeemed}</td>
-                  <td className="companyTableCellData">{row.totalRedeemed > (-1) * row.totalRecharged ? "" : "-"}{(((row.totalRecharged + row.totalRedeemed) / row.totalRecharged) * 100).toFixed(2)}%</td>
-                  <td className="companyTableCellData">{row.lastLogin?row.lastLogin:"N/A"}</td>
-
-
+                  <td className="companyTableCellData"><button className="companyTableCellDataButtonContainerButton upper" style={{ backgroundColor: row.activeStatus ? "green" : "red",marginLeft:"2px",marginRight:"2px" }} onClick={() => handleActiveInactive(row)}>{row.activeStatus ? <span style={{paddingLeft:"1px"}}>&nbsp;Active&nbsp;&nbsp;</span>:<span>InActive</span>} </button> </td>
+                  <td className="companyTableCellData">{row.loginTimes >= 0 ? row.loginTimes : "N/A"}</td>
+                  <td className="companyTableCellData">{row.lastLogin ? row.lastLogin : "N/A"}</td>
                 </tr>
               ))}
             </table>
+          </div>
+          <div className='paginationContainer'>
+            <div>
+              <Pagination count={Math.floor(totalPage/10)} color="primary" page={page} onChange={handlePageChange} />
+            </div>
           </div>
         </div>
       </div>
@@ -310,23 +346,46 @@ const Dashboard = () => {
             <div className="closeButton" onClick={() => setIsUpdateCredit(false)}>&times;</div>
             <form className="form" onSubmit={(e) => handleSubmit(e)}>
               <div style={{ color: "black" }}>{`UserName : ${details.userName}`}</div>
-
               <br />
-              <div style={{ color: "black" }}>
-                NickName : {`${details.nickName} `}
-              </div>
+              <div style={{ color: "black" }}>  NickName : {`${details.nickName} `} </div>
               <br />
-              <div style={{ color: "black" }}>
-                Initial Credits : {`${details.initialcredits} `}
-              </div>
+              <div style={{ color: "black" }}> Initial Credits : {`${details.initialcredits}`}</div>
               <label>
                 {`${(addOrRedeemeCredits > 0) ? "Add Credit : " : "Redeeme Credits : "}`}
                 <input type='text' value={details.credits} onChange={(e) => handleChangeFormDetails({ credits: e.target.value.trim() })} />
-
               </label>
               <br />
               <button type='submit' onClick={() => updateCredit()}> {`${(addOrRedeemeCredits > 0) ? "Add Credit" : "Redeeme Credits"}`} </button>
             </form>
+          </div>
+        </div>}
+
+      {isAddClientModalOpen &&
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="closeButton" onClick={() => setIsClientPopModalOpen(false)}>&times;</div>
+            <div className='addUserForm'>
+              <form className="form" onSubmit={(e) => handleSubmit(e)}>
+                <div>
+                  <div> {`UserName * : `} </div>
+                  <input className='addClientFiled' type='text' value={details.clientUserName} onChange={(e) => handleChangeFormDetails({ clientUserName: e.target.value.trim() })} />
+                </div>
+                <div>
+                  <div>{`NickName : `} </div>
+                  <input className='addClientFiled' type='text' value={details.clientNickName} onChange={(e) => handleChangeFormDetails({ clientNickName: e.target.value.trim() })} />
+                </div>
+                <div>
+                  <div>{`Password * : `}</div>
+                  <input className='addClientFiled' type='text' value={details.password} onChange={(e) => handleChangeFormDetails({ password: e.target.value.trim() })} />
+                </div>
+                <div>
+                  <div>{`Confirm Password * : `}</div>
+                  <input className='addClientFiled' type='text' value={details.confirmPassword} onChange={(e) => handleChangeFormDetails({ confirmPassword: e.target.value.trim() })} />
+                </div>
+                <div>Initial Credit : 0</div>
+                <button type='submit' onClick={() => addClient()}>Add client</button>
+              </form>
+            </div>
           </div>
         </div>}
 
@@ -336,14 +395,11 @@ const Dashboard = () => {
             <div className="closeButton" onClick={() => setIsUpdatePassword(false)}>&times;</div>
             <form className="form" onSubmit={(e) => handleSubmit(e)}>
               <div style={{ color: "black" }}>{`UserName : ${details.userName}`}</div>
-              <div style={{ color: "black" }}>
-                NickName : {`${details.nickName} `}
-              </div>
+              <div style={{ color: "black" }}> NickName : {`${details.nickName} `}</div>
               <br />
               <label>
                 {`Enter New Password`}
                 <input type='text' value={details.password} onChange={(e) => handleChangeFormDetails({ password: e.target.value.trim() })} />
-
               </label>
               <br />
               <label>
@@ -362,6 +418,30 @@ const Dashboard = () => {
               <h5 style={{ color: "black" }}> Are you sure want to delete</h5>
               <button onClick={() => handleDelete()}>Yes</button>
               <button onClick={() => setOpenDelete(false)}>No</button>
+            </div>
+          </div>
+        </div>}
+
+      {isReportOpen &&
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="closeButton" onClick={() => setIsReportOpen(false)}>&times;</div>
+            <br />
+            <div>
+              <table className="dashboardHistoryTable">
+                <tr className="dashboardHistoryTableCellHeader">
+                  <td className="dashboardHistoryTableCellDataHeader">Total Recharged</td>
+                  <td className="dashboardHistoryTableCellDataHeader">Total Redeemed</td>
+                  <td className="dashboardHistoryTableCellDataHeader">Holding Percentage</td>
+                </tr>
+
+                <tr className="dashboardHistoryTableCell">
+                  <td className="dashboardHistoryTableCellData">{selelctedAccount.totalRecharged}</td>
+                  <td className="dashboardHistoryTableCellData">{(-1) * selelctedAccount.totalRedeemed}</td>
+                  <td className="companyTableCellData">{selelctedAccount.totalRedeemed > (-1) * selelctedAccount.totalRecharged ? "" : "-"}{(((selelctedAccount.totalRecharged + selelctedAccount.totalRedeemed) / selelctedAccount.totalRecharged) * 100).toFixed(2)}%</td>
+                </tr>
+
+              </table>
             </div>
           </div>
         </div>}

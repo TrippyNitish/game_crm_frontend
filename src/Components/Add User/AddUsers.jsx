@@ -66,16 +66,7 @@ const AddClient = () => {
     }
 
 
-    const clientDesignation = {
-        company: "Master",
-        master: "Distributer",
-        distributer: "SubDistributer",
-        subDistributer: "Store",
-        store: "Player"
-    }
-
-
-    useEffect(() => {
+   useEffect(() => {
         if (!user.userName)
             navigate("/")
     }, [])
@@ -118,7 +109,7 @@ const AddClient = () => {
                             <input className='addClientFiled' type='text' value={details.confirmPassword} onChange={(e) => handleChangeFormDetails({ confirmPassword: e.target.value.trim() })} />
                         </div>
                         <div>Initial Credit : 0</div>
-                        <button type='submit' onClick={() => addClient()}>Add {clientDesignation[user.designation]}</button>
+                        <button type='submit' onClick={() => addClient()}>Add client</button>
                     </form>
                 </div>
             </div>

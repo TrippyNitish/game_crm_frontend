@@ -68,7 +68,7 @@ const Login = () => {
 
     useEffect(() => {
         checkTokenExist()
-        loadCaptchaEnginge(6,'wheat','white');
+        loadCaptchaEnginge(6,'#85adad','white','numbers');
     }, [])
 
     return (
@@ -83,7 +83,7 @@ const Login = () => {
                     </div>
                     <div className='userLoginFields'>
                         <KeyIcon />
-                        <input required  autoComplete='off' type='text' className="loginInput" placeholder='Password' onChange={(e) => handleChangeFormDetails({ password: e.target.value.trim() })} />
+                        <input required  autoComplete='off' type='password' className="loginInput" placeholder='Password' onChange={(e) => handleChangeFormDetails({ password: e.target.value.trim() })} />
                     </div>
                     <div className='captcha' >
                         <input required  autoComplete='off'  className='captchaInput' type="text" placeholder="Enter Captcha" name="username" onChange={(e) => setCaptcha(e.target.value)} autocomplete="off" style={{ width: "40%" }} />
