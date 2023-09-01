@@ -5,6 +5,7 @@ import './Transaction.css'
 import { getTransactionsOnBasisOfPeriodApi } from '../../services/api';
 import NavBar from '../NavBar/Navbar';
 import Sidebar from '../Sidebar/SideBar';
+import Pagination from '@mui/material/Pagination';
 
 
 const TransactionDetails = () => {
@@ -16,22 +17,33 @@ const TransactionDetails = () => {
     var [startDate, setStartDate] = useState("")
     var [endDate, setEndDate] = useState(Date.now)
     const [history, setHistory] = useState([])
-
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(0)
     const [selectedHirarchy, setSelectedHirarchy] = useState("all")
 
     const currentDate = new Date().toISOString().split('T')[0];
 
-    const searchTransactionInPeriod = async () => {
+    const searchTransactionInPeriod = async (pageNumber = 1) => {
         console.log((user.designation == 'company' ? selectedHirarchy : user.designation))
         if (user.designation == "company") {
-            const response = await getTransactionsOnBasisOfPeriodApi({ startDate, endDate, hirarchyName: selectedHirarchy, designation: "company", userName: user.userName })
+            const response = await getTransactionsOnBasisOfPeriodApi({ startDate, endDate, hirarchyName: selectedHirarchy, designation: "company", userName: user.userName, pageNumber })
+            console.log("trf",response.data)
             setHistory(response.data.transactionsFiltered)
+            setTotalPage(response.data.totalPageCount)
 
         } else {
-            const response = await getTransactionsOnBasisOfPeriodApi({ startDate, endDate, designation: user.designation, userName: user.userName })
+            const response = await getTransactionsOnBasisOfPeriodApi({ startDate, endDate, designation: user.designation, userName: user.userName, pageNumber })
+            console.log("trf",response.data)
             setHistory(response.data.transactionsFiltered)
+            setTotalPage(response.data.totalPageCount)
         }
     }
+
+    const handlePageChange = (event, pageNumber) => {
+        setPage(pageNumber);
+        searchTransactionInPeriod(pageNumber)
+        console.log("page", pageNumber)
+    };
 
     useEffect(() => {
         console.log("tttt", user)
@@ -96,10 +108,13 @@ const TransactionDetails = () => {
                             ))}
                         </table>
                     </div>
+                    <div className='paginationContainer'>
+                        <div>
+                            <Pagination count={Math.ceil(totalPage / 20)} color="primary" page={page} onChange={handlePageChange} />
+                        </div>
+                    </div>
                 </div>
-
             </div>
-
         </div>
     )
 }
