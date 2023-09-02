@@ -24,7 +24,7 @@ const Login = () => {
         if (validateCaptcha(captcha) == true) {
         }
         else {
-            alert('Captcha Does Not Match');
+            alert('Captcha Does not Match');
             return
         }
 
