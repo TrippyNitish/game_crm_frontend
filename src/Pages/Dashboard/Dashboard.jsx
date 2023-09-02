@@ -7,6 +7,7 @@ import { deleteClientApi, getClientListApi, activeStatusApi, transactionsApi, up
 import Sidebar from '../../Components/Sidebar/SideBar';
 import NavBar from '../../Components/NavBar/Navbar';
 import Pagination from '@mui/material/Pagination';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const Dashboard = () => {
 
@@ -41,7 +42,9 @@ const Dashboard = () => {
   const [isReportOpen, setIsReportOpen] = useState(false)
   const [page, setPage] = useState(1);
   const [totalPage,setTotalPage]=useState(0)
- 
+  const[userNameForClientList,setUserNameForClientList]=useState("")
+  const [userNameStack,setUserNameStack] = useState([]) 
+
   const handleSubmit = async (e) => {
     e.preventDefault()
   }
@@ -133,7 +136,6 @@ const Dashboard = () => {
     return
   }
 
-
   const updatePassword = async () => {
     if (details.password !== details.confirmNewpassword) {
       alert("Password is not matching")
@@ -163,18 +165,18 @@ const Dashboard = () => {
     setOpenDelete(true)
   }
 
-  const getClientList = async (pageNumber=1) => {
-    const response = await getClientListApi({ userName: user.userName,pageNumber })
-    console.log("gtCl",response.data._doc.clientList)
+  const getClientList = async () => {
+    if(!userNameForClientList)
+       return
+    const response = await getClientListApi({ userName: userNameForClientList,pageNumber:page })
     dispatch(setClientsList(response.data._doc.clientList))
+    console.log("totalPageCompanyclick",response.data.totalPageCount)
     setTotalPage(response.data.totalPageCount)
     return
   }
 
   const handlePageChange = (event, pageNumber) => {
     setPage(pageNumber);
-    getClientList(pageNumber)
-    console.log("page",pageNumber)
   };
 
   const handleTransactions = async (userName) => {
@@ -211,10 +213,6 @@ const Dashboard = () => {
   }
 
   const handleActiveInactive = async (items) => {
-    if (!selelctedAccount.userName) {
-      alert("Please select an Account")
-      return
-    }
     const response = await activeStatusApi({ clientUserName: items.userName, userName: user.userName, activeStatus: items.activeStatus })
     if (response)
       getClientList()
@@ -226,12 +224,26 @@ const Dashboard = () => {
     )
   }
 
+  const handleBackButton=()=>{
+    if (user.designation != "company"){
+      return
+    }
+    if (userNameStack.length === 1) {
+      return;
+    }
+    const newStack = [...userNameStack];
+    const userNameForBackButton = newStack.pop();
+    setUserNameStack(newStack)
+    setUserNameForClientList(userNameForBackButton)
+  }
+
   const handleCompanyClick = async (row) => {
     if (user.designation == "company") {
-      const response = await getClientListApi({ userName: row.userName })
-      setFilteredClient(response.data.clientList)
+      setUserNameStack([...userNameStack,userNameForClientList])
+      setUserNameForClientList(row.userName)
     }
   }
+
   const handleReport = () => {
     setIsReportOpen(true)
   }
@@ -246,9 +258,15 @@ const Dashboard = () => {
     setSelectedAccount({ ...selelctedAccount, ...selectedUser })
   }, [clientList])
 
+  useEffect(()=>{
+    getClientList()
+  },[userNameForClientList,page])
+
   useEffect(() => {
     if (!user.userName)
       navigate("/")
+    userNameStack.push(user.userName)
+    setUserNameForClientList(user.userName)
     getClientList()
   }, [])
 
@@ -332,8 +350,9 @@ const Dashboard = () => {
             </table>
           </div>
           <div className='paginationContainer'>
-            <div>
-              <Pagination count={Math.floor(totalPage/10)} color="primary" page={page} onChange={handlePageChange} />
+            <div className='backButton' onClick={()=>handleBackButton()}><ArrowBackIcon/></div>
+            <div className='paginationView'>
+              <Pagination count={Math.ceil(totalPage/10)} color="primary" page={page} onChange={handlePageChange} />
             </div>
           </div>
         </div>

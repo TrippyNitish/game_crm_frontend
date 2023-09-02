@@ -691,5 +691,19 @@ button:hover {
     display: flex;
     padding: 5px;
     justify-content: center;
+    position: relative;
+    align-items: center;
 }
 
+.backButton{    
+    position: absolute;
+    left: 5px;
+    padding: 3px 13px;
+    border-radius: 5px;
+    background-color: #4d6676;
+}
+.backButton:hover{
+    cursor: pointer;
+    background-color: #86b0ca;
+
+}
