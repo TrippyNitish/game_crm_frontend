@@ -83,15 +83,6 @@
     gap: 5px;
 }
 
-.firstCompnayUserViewColumn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 50px;
-    background-color: white;
-    padding: 10px;
-}
-
 
 .thirdCompnayUserViewColumn {
     width: 100%;
@@ -152,30 +143,22 @@
 
 .companyTableCellDataButtons {}
 
-.secondCompnayUserViewColumn {
-    padding: 20px;
-
-}
-
-.secondCompnayUserViewColumnComponents {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px
-}
 
 .firstCompnayUserViewColumn {
-    width: 90%;
+    width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 50px;
     padding: 10px;
 }
-
-.secondCompnayUserViewColumn {
-    width: 90%;
-    flex-direction: row;
+.filterClientSearch{
+    width: 250px;
+    height: 30px;
+}
+.filterActiveStatus{
+    display: flex;
+    gap: 10px;
 }
 
 .thirdCompnayUserViewColumn {
@@ -255,6 +238,9 @@
     .companyTableCellDataButtons {
         gap: 5px
     }
+    .addClientButton{
+        font-size: 15px;
+    }
 
     .companyTableCellDataUserName {
         font-size: 15px;
@@ -282,18 +268,26 @@
     }
 
     .firstCompnayUserViewColumn {
-        width: 90%;
+        width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         gap: 50px;
         padding: 10px;
     }
-
-    .secondCompnayUserViewColumn {
-        width: 90%;
-        flex-direction: column;
+    .filterClientSearch{
+        width: 220px;
+        height: 30px;
     }
+    .filterActiveStatus{
+        display: flex;
+        gap: 9px;
+    }
+    
+    .addClientButton{
+        font-size: 12px;
+    }
+
 
     .selectedAccount {
         font-size: 15px;
@@ -374,13 +368,26 @@
     }
 
     .firstCompnayUserViewColumn {
-        width: 94%;
+        width: 100%;
         display: flex;
+        justify-content: space-between;
         justify-content: center;
         align-items: center;
-        gap: 50px;
+        gap: 30px;
         background-color: white;
         padding: 10px;
+    }
+    .filterClientSearch{
+        width: 200px;
+        height: 30px;
+    }
+    .filterActiveStatus{
+        display: flex;
+        gap: 7px;
+    }
+    
+    .addClientButton{
+        font-size: 11px;
     }
 
     .secondCompnayUserViewColumn {
@@ -495,15 +502,26 @@
     }
 
     .firstCompnayUserViewColumn {
-        width: 95%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap:10px;
         padding: 10px;
     }
-
-    .secondCompnayUserViewColumn {
-        width: 95%;
-        flex-direction: column;
+    .filterClientSearch{
+        width: 170px;
+        height: 25px;
+    }
+    .filterActiveStatus{
+        display: flex;
+        gap: 4px;
+    }
+    
+    .addClientButton{
+        font-size: 8px;
     }
 
+  
     .thirdCompnayUserViewColumn {
         margin-top: 0px;
     }
@@ -579,13 +597,18 @@
     .firstCompnayUserViewColumn {
         width: 100%;
         display: flex;
+        justify-content: space-between;
         justify-content: center;
         align-items: center;
-        gap: 50px;
+        gap: 10px;
         background-color: white;
         padding: 10px;
     }
 
+    .filterClientSearch{
+        width: 140px;
+        height: 20px;
+    }
     .thirdCompnayUserViewColumn {
         margin-top: 0px;
     }
