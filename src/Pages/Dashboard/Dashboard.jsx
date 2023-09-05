@@ -199,6 +199,7 @@ const Dashboard = () => {
   };
 
   const getClientList = async () => {
+    console.log("rytr")
     if (!userNameForClientList) return;
     const response = await getClientListApi({
       userName: userNameForClientList,
@@ -206,8 +207,9 @@ const Dashboard = () => {
       isAll,
       isActive,
     });
-    dispatch(setClientsList(response.data.userClientList));
     console.log("totalPageCompanyclick", response.data);
+
+    dispatch(setClientsList(response.data.userClientList));
     setTotalPage(response.data.totalPageCount);
     return;
   };

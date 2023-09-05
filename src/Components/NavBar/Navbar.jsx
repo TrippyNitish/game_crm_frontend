@@ -1,15 +1,17 @@
 import React, { useEffect, useState,  } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
 import './Navbar.css'
 import Sidebar from '../Sidebar/SideBar';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { setLogout } from '../../redux/reducers';
 
 
 const NavBar = () => {
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const user = useSelector((state) => state.user)
 
@@ -20,6 +22,7 @@ const NavBar = () => {
     }
 
     const handleLogOut = (e) => {
+        dispatch(setLogout())
         Cookies.remove('userToken');
         navigate("/")
     }
