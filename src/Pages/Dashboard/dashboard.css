@@ -395,6 +395,7 @@
         width: 94%;
     }
     .selectedAccount {
+        width: 100%;
         font-size: 12px;
     }
     .thirdCompnayUserViewColumn {
@@ -685,11 +686,7 @@ button:hover {
     height: 100vh;
 }
 
-@media (max-width:767px) {
-    .isSideBarShow {
-        display: none;
-    }    
-}
+
 @media (max-width:450) {
    
     .modal-content-history {
@@ -729,4 +726,13 @@ button:hover {
     cursor: pointer;
     background-color: #86b0ca;
 
+}
+@media (max-width:767px) {
+    .isSideBarShow {
+        display: none;
+    }    
+    .paginationContainer{
+        width: 100%;
+       padding-bottom: 60px;
+    }
 }
