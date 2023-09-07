@@ -515,7 +515,7 @@ const Dashboard = () => {
                 <tr className="companyTableCell" key={row.name}>
                   <td className="companyTableCellDataButtonContainer">
                     <button
-                      className="companyTableCellDataButtonContainerButton lower "
+                      className="companyTableCellDataButtonContainerButton"
                       onClick={() =>
                         setSelectedAccount({ ...selelctedAccount, ...row })
                       }

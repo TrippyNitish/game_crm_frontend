@@ -288,7 +288,10 @@
         font-size: 12px;
     }
 
-
+    .companyTableCellDataButtonContainer{
+        align-items: center;
+        padding: 2px;
+    }
     .selectedAccount {
         font-size: 15px;
     }
@@ -390,6 +393,10 @@
         font-size: 11px;
     }
 
+    .companyTableCellDataButtonContainer{
+        align-items: center;
+        padding: 2px;
+    }
     .secondCompnayUserViewColumn {
         flex-direction: column;
         width: 94%;
@@ -492,7 +499,9 @@
     }
 
     .companyTableCellDataButtonContainerButton {
-        font-size: 9px;
+        margin-top: auto;
+        margin-bottom: auto;
+        font-size: 10px;
         padding: 5px;
     }
 
@@ -518,6 +527,10 @@
         gap: 4px;
     }
     
+    .companyTableCellDataButtonContainer{
+        align-items: center;
+        padding: 2px;
+    }
     .addClientButton{
         font-size: 8px;
     }
@@ -584,8 +597,14 @@
 
     }
 
-    .companyTableCellDataButtonContainerButton {
-        font-size: 8px;
+    .companyTableCellDataButtonContainer{
+            display: flex;
+            align-items: center;
+    }
+
+    .companyTableCellDataButtonContainer{
+        align-items: center;
+        font-size: 10px;
         padding: 2px;
     }
 
