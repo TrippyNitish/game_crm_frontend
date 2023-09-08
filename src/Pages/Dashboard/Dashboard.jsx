@@ -254,7 +254,7 @@ const Dashboard = () => {
     setDetails({
       ...items,
       clientUserName: items.userName,
-      userName: user.userName,
+      userName: items.userName,
       initialcredits,
       credits: 0,
     });
@@ -517,7 +517,7 @@ const Dashboard = () => {
                     <button
                       className="companyTableCellDataButtonContainerButton"
                       onClick={() =>
-                        setSelectedAccount({ ...selelctedAccount, ...row })
+                        setSelectedAccount(row)
                       }
                     >
                       Update
