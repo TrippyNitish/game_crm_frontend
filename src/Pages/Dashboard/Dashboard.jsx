@@ -55,6 +55,9 @@ const Dashboard = () => {
   const [isAll, setIsAll] = useState(true);
   const [isActive, setIsActive] = useState(true);
   const [isPlayer, setIsPlayer] = useState(false);
+  const [isAllClients, setIsAllClients] = useState(true);
+  const [isStorePlayers, setIsStorePlayers] = useState(false);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -201,12 +204,26 @@ const Dashboard = () => {
   const getClientList = async () => {
     console.log("rytr")
     if (!userNameForClientList) return;
-    const response = await getClientListApi({
-      userName: userNameForClientList,
-      pageNumber: page,
-      isAll,
-      isActive,
-    });
+
+    var response;
+    if(user.designation == 'subDistributer'){
+      response = await getClientListApi({
+        userName: userNameForClientList,
+        pageNumber: page,
+        isAll,
+        isActive,
+        isAllClients,
+        isStorePlayers
+      });
+    }else{
+      response = await getClientListApi({
+        userName: userNameForClientList,
+        pageNumber: page,
+        isAll,
+        isActive,
+      });
+    }
+  
     console.log("totalPageCompanyclick", response.data);
 
     dispatch(setClientsList(response.data.userClientList));
@@ -304,6 +321,15 @@ const Dashboard = () => {
     setIsActive(activityIsActive);
   };
 
+  const handleStoresPlayers=(isAllClients,isStorePlayers)=>{
+        setIsAllClients(isAllClients)
+        setIsStorePlayers(isStorePlayers)
+  }
+
+  useEffect(()=>{
+    getClientList();
+  },[isAllClients,isStorePlayers])
+
   useEffect(() => {
     getClientList();
   }, [isAll, isActive]);
@@ -343,76 +369,35 @@ const Dashboard = () => {
           {/* //////////////////////////////////////////////////////////////////////////// */}
           <div className="adminStructure">
             <div className="firstCompnayUserViewColumn">
-              <input
-                className="filterClientSearch"
-                type="text"
-                placeholder="Search Account"
-                onChange={(e) => filterClients(e.target.value)}
-              />
+              <input className="filterClientSearch" type="text" placeholder="Search Account" onChange={(e) => filterClients(e.target.value)} />
               <div>
                 <div style={{ color: "brown" }}>Filter Clients</div>
                 <div className="filterActiveStatus">
                   <label
-                    style={{
-                      display: "flex",
-                      gap: "4px",
-                      alignItems: "center",
-                    }}
-                  >
-                    <input
-                      type="radio"
-                      onClick={() => handleActiveInactiveFilter(true, true)}
-                      name="activity"
-                    />
-                    All
-                  </label>
-                  <label
-                    style={{
-                      display: "flex",
-                      gap: "4px",
-                      alignItems: "center",
-                    }}
-                  >
-                    <input
-                      type="radio"
-                      onClick={() => handleActiveInactiveFilter(false, false)}
-                      name="activity"
-                    />
-                    InActive
-                  </label>
-                  <label
-                    style={{
-                      display: "flex",
-                      gap: "4px",
-                      alignItems: "center",
-                    }}
-                  >
-                    <input
-                      type="radio"
-                      onClick={() => handleActiveInactiveFilter(false, true)}
-                      name="activity"
-                    />
-                    Active
-                  </label>
+                    style={{ display: "flex", gap: "4px",alignItems: "center",   }}     >
+                    <input  type="radio"  onClick={() => handleActiveInactiveFilter(true, true)}  name="activity" />  All </label>
+                  <label   style={{ display: "flex", gap: "4px", alignItems: "center", }}   >
+                    <input  type="radio"  onClick={() => handleActiveInactiveFilter(false, false)} name="activity" /> InActive </label>
+                  <label style={{display: "flex", gap: "4px",alignItems: "center", }} >
+                    <input type="radio" onClick={() => handleActiveInactiveFilter(false, true)} name="activity" /> Active  </label>
                 </div>
+                {user.designation == 'subDistributer' && <div className="filterActiveStatus">
+                  <label
+                    style={{ display: "flex", gap: "4px",alignItems: "center",   }}     >
+                    <input  type="radio"  onClick={() => handleStoresPlayers(true, true)}  name="isStoreOrPlayer" />  AllClients </label>
+                  <label   style={{ display: "flex", gap: "4px", alignItems: "center", }}   >
+                    <input  type="radio"  onClick={() => handleStoresPlayers(false, true)} name="isStoreOrPlayer" /> Stores </label>
+                  <label style={{display: "flex", gap: "4px",alignItems: "center", }} >
+                    <input type="radio" onClick={() => handleStoresPlayers(false, false)} name="isStoreOrPlayer" /> Players  </label>
+                </div>}
               </div>
 
-              <button
-                className="addClientButton"
-                onClick={() => handleAddClientModal()}
-              >
-                Add Client
-              </button>
+              <button className="addClientButton" onClick={() => handleAddClientModal()}> Add Client </button>
             </div>
             <div className="selectedAccount">
               <div className="acccountName">
                 <div className="acccountNameUpper"> Account </div>
-                <div>
-                  {" "}
-                  {selelctedAccount.userName
-                    ? selelctedAccount.userName
-                    : "N/A"}{" "}
-                </div>
+                <div>{" "} {selelctedAccount.userName ? selelctedAccount.userName : "N/A"}{" "} </div>
               </div>
               <div className="balance">
                 <div className="acccountNameUpper">Credits</div>
@@ -439,10 +424,7 @@ const Dashboard = () => {
                       width: "15px",
                       borderRadius: "7px",
                       height: "15px",
-                      backgroundColor: selelctedAccount.activeStatus
-                        ? "green"
-                        : "red",
-                    }}
+                      backgroundColor: selelctedAccount.activeStatus ? "green" : "red",  }}
                   ></div>
                 </div>
               </div>
