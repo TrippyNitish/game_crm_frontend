@@ -271,7 +271,7 @@ const Dashboard = () => {
     setDetails({
       ...items,
       clientUserName: items.userName,
-      userName: items.userName,
+      userName: user.userName,
       initialcredits,
       credits: 0,
     });
