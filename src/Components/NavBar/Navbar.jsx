@@ -10,10 +10,9 @@ import { setLogout } from "../../redux/reducers";
 const NavBar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isSideBarShow, setIsSideBarShow] = useState(true);
 
   const user = useSelector((state) => state.user);
-
-  const [isSideBarShow, setIsSideBarShow] = useState(true);
 
   const handleBarButtonClick = () => {
     setIsSideBarShow(!isSideBarShow);
@@ -24,10 +23,6 @@ const NavBar = () => {
     Cookies.remove("userToken");
     navigate("/");
   };
-
-  useEffect(() => {
-    if (!user.userName) navigate("/");
-  }, []);
 
   return (
     <div className="navBar">
@@ -53,7 +48,7 @@ const NavBar = () => {
       <div className="navBarComponents">
         <AccountCircleIcon />
         <div>
-          <div className="welcome">{` ${user.userName}`} </div>
+          <div className="welcome">{` ${user.username}`} </div>
           <div>{`(${user.designation})`}</div>
         </div>
         <button

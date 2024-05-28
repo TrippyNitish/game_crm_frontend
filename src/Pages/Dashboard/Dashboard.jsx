@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setClientsList, setCredits } from "../../redux/reducers";
+import { setClientsList, setCredits, setUsers } from "../../redux/reducers";
 import "./dashboard.css";
 import {
   deleteClientApi,
@@ -12,11 +12,14 @@ import {
   updatePasswordApi,
   getRealTimeCreditsApi,
   addClientApi,
+  baseUrl,
 } from "../../services/api";
 import Sidebar from "../../Components/Sidebar/SideBar";
 import NavBar from "../../Components/NavBar/Navbar";
 import Pagination from "@mui/material/Pagination";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { getDecodedToken } from "../../utils/authenticate";
+import axios from "axios";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -57,7 +60,6 @@ const Dashboard = () => {
   const [isPlayer, setIsPlayer] = useState(false);
   const [isAllClients, setIsAllClients] = useState(true);
   const [isStorePlayers, setIsStorePlayers] = useState(false);
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -202,20 +204,19 @@ const Dashboard = () => {
   };
 
   const getClientList = async () => {
-    console.log("rytr")
     if (!userNameForClientList) return;
 
     var response;
-    if(user.designation == 'subDistributer'){
+    if (user.designation == "subDistributer") {
       response = await getClientListApi({
         userName: userNameForClientList,
         pageNumber: page,
         isAll,
         isActive,
         isAllClients,
-        isStorePlayers
+        isStorePlayers,
       });
-    }else{
+    } else {
       response = await getClientListApi({
         userName: userNameForClientList,
         pageNumber: page,
@@ -223,7 +224,7 @@ const Dashboard = () => {
         isActive,
       });
     }
-  
+
     console.log("totalPageCompanyclick", response.data);
 
     dispatch(setClientsList(response.data.userClientList));
@@ -304,7 +305,7 @@ const Dashboard = () => {
     setUserNameStack(newStack);
     setUserNameForClientList(userNameForBackButton);
   };
-
+``
   const handleCompanyClick = async (row) => {
     if (user.designation == "company") {
       setUserNameStack([...userNameStack, userNameForClientList]);
@@ -321,14 +322,14 @@ const Dashboard = () => {
     setIsActive(activityIsActive);
   };
 
-  const handleStoresPlayers=(isAllClients,isStorePlayers)=>{
-        setIsAllClients(isAllClients)
-        setIsStorePlayers(isStorePlayers)
-  }
+  const handleStoresPlayers = (isAllClients, isStorePlayers) => {
+    setIsAllClients(isAllClients);
+    setIsStorePlayers(isStorePlayers);
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     getClientList();
-  },[isAllClients,isStorePlayers])
+  }, [isAllClients, isStorePlayers]);
 
   useEffect(() => {
     getClientList();
@@ -351,10 +352,25 @@ const Dashboard = () => {
   }, [userNameForClientList, page]);
 
   useEffect(() => {
-    if (!user.userName) navigate("/");
+    // if (!user.userName) navigate("/");
     userNameStack.push(user.userName);
     setUserNameForClientList(user.userName);
     getClientList();
+  }, []);
+
+  // NEW CODE
+  useEffect(() => {
+    const { username } = getDecodedToken();
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/api/users/${username}`);
+        dispatch(setUsers(response.data));
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
@@ -369,35 +385,123 @@ const Dashboard = () => {
           {/* //////////////////////////////////////////////////////////////////////////// */}
           <div className="adminStructure">
             <div className="firstCompnayUserViewColumn">
-              <input className="filterClientSearch" type="text" placeholder="Search Account" onChange={(e) => filterClients(e.target.value)} />
+              <input
+                className="filterClientSearch"
+                type="text"
+                placeholder="Search Account"
+                onChange={(e) => filterClients(e.target.value)}
+              />
               <div>
                 <div style={{ color: "brown" }}>Filter Clients</div>
                 <div className="filterActiveStatus">
                   <label
-                    style={{ display: "flex", gap: "4px",alignItems: "center",   }}     >
-                    <input  type="radio"  onClick={() => handleActiveInactiveFilter(true, true)}  name="activity" />  All </label>
-                  <label   style={{ display: "flex", gap: "4px", alignItems: "center", }}   >
-                    <input  type="radio"  onClick={() => handleActiveInactiveFilter(false, false)} name="activity" /> InActive </label>
-                  <label style={{display: "flex", gap: "4px",alignItems: "center", }} >
-                    <input type="radio" onClick={() => handleActiveInactiveFilter(false, true)} name="activity" /> Active  </label>
-                </div>
-                {user.designation == 'subDistributer' && <div className="filterActiveStatus">
+                    style={{
+                      display: "flex",
+                      gap: "4px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      onClick={() => handleActiveInactiveFilter(true, true)}
+                      name="activity"
+                    />{" "}
+                    All{" "}
+                  </label>
                   <label
-                    style={{ display: "flex", gap: "4px",alignItems: "center",   }}     >
-                    <input  type="radio"  onClick={() => handleStoresPlayers(true, true)}  name="isStoreOrPlayer" />  AllClients </label>
-                  <label   style={{ display: "flex", gap: "4px", alignItems: "center", }}   >
-                    <input  type="radio"  onClick={() => handleStoresPlayers(false, true)} name="isStoreOrPlayer" /> Stores </label>
-                  <label style={{display: "flex", gap: "4px",alignItems: "center", }} >
-                    <input type="radio" onClick={() => handleStoresPlayers(false, false)} name="isStoreOrPlayer" /> Players  </label>
-                </div>}
+                    style={{
+                      display: "flex",
+                      gap: "4px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      onClick={() => handleActiveInactiveFilter(false, false)}
+                      name="activity"
+                    />{" "}
+                    InActive{" "}
+                  </label>
+                  <label
+                    style={{
+                      display: "flex",
+                      gap: "4px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      onClick={() => handleActiveInactiveFilter(false, true)}
+                      name="activity"
+                    />{" "}
+                    Active{" "}
+                  </label>
+                </div>
+                {user.designation == "subDistributer" && (
+                  <div className="filterActiveStatus">
+                    <label
+                      style={{
+                        display: "flex",
+                        gap: "4px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        onClick={() => handleStoresPlayers(true, true)}
+                        name="isStoreOrPlayer"
+                      />{" "}
+                      AllClients{" "}
+                    </label>
+                    <label
+                      style={{
+                        display: "flex",
+                        gap: "4px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        onClick={() => handleStoresPlayers(false, true)}
+                        name="isStoreOrPlayer"
+                      />{" "}
+                      Stores{" "}
+                    </label>
+                    <label
+                      style={{
+                        display: "flex",
+                        gap: "4px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        onClick={() => handleStoresPlayers(false, false)}
+                        name="isStoreOrPlayer"
+                      />{" "}
+                      Players{" "}
+                    </label>
+                  </div>
+                )}
               </div>
 
-              <button className="addClientButton" onClick={() => handleAddClientModal()}> Add Client </button>
+              <button
+                className="addClientButton"
+                onClick={() => handleAddClientModal()}
+              >
+                {" "}
+                Add Client{" "}
+              </button>
             </div>
             <div className="selectedAccount">
               <div className="acccountName">
                 <div className="acccountNameUpper"> Account </div>
-                <div>{" "} {selelctedAccount.userName ? selelctedAccount.userName : "N/A"}{" "} </div>
+                <div>
+                  {" "}
+                  {selelctedAccount.userName
+                    ? selelctedAccount.userName
+                    : "N/A"}{" "}
+                </div>
               </div>
               <div className="balance">
                 <div className="acccountNameUpper">Credits</div>
@@ -424,7 +528,10 @@ const Dashboard = () => {
                       width: "15px",
                       borderRadius: "7px",
                       height: "15px",
-                      backgroundColor: selelctedAccount.activeStatus ? "green" : "red",  }}
+                      backgroundColor: selelctedAccount.activeStatus
+                        ? "green"
+                        : "red",
+                    }}
                   ></div>
                 </div>
               </div>
@@ -481,73 +588,74 @@ const Dashboard = () => {
           {/* //////////////////////////////////////////////////////////////////////////// */}
           <div className="thirdCompnayUserViewColumn">
             <table className="companyTable">
-              <tr className="companyTableCell">
-                <th className="companyTableCellHeader">Management</th>
-                <th className="companyTableCellHeader">User Name</th>
-                <th className="companyTableCellHeader">NickName</th>
-                <th className="companyTableCellHeader">Designation</th>
-                <th className="companyTableCellHeader">Credits</th>
-                <th className="companyTableCellHeader">TimeZone</th>
-                <th className="companyTableCellHeader">Status</th>
-                <th className="companyTableCellHeader">Login Times</th>
-                <th className="companyTableCellHeader">Last Login</th>
-              </tr>
-
-              {filteredClient.map((row, index) => (
-                <tr className="companyTableCell" key={row.name}>
-                  <td className="companyTableCellDataButtonContainer">
-                    <button
-                      className="companyTableCellDataButtonContainerButton"
-                      onClick={() =>
-                        setSelectedAccount(row)
-                      }
-                    >
-                      Update
-                    </button>
-                  </td>
-                  <td
-                    className="companyTableCellDataUserName"
-                    onClick={() => handleCompanyClick(row)}
-                  >
-                    {row.userName}
-                  </td>
-                  <td className="companyTableCellData">
-                    {row.nickName ? row.nickName : "N/A"}
-                  </td>
-                  <td className="companyTableCellData">
-                    {row.designation ? row.designation : "N/A"}
-                  </td>
-                  <td className="companyTableCellData">{row.credits}</td>
-                  <td className="companyTableCellData">
-                    {row.timeZone ? row.timeZone : "EST"}
-                  </td>
-                  <td className="companyTableCellData">
-                    <button
-                      className="companyTableCellDataButtonContainerButton upper"
-                      style={{
-                        backgroundColor: row.activeStatus ? "green" : "red",
-                        marginLeft: "2px",
-                        marginRight: "2px",
-                      }}
-                      onClick={() => handleActiveInactive(row)}
-                    >
-                      {row.activeStatus ? (
-                        <span style={{ paddingLeft: "1px" }}>
-                          &nbsp;Active&nbsp;&nbsp;
-                        </span>
-                      ) : (
-                        <span>InActive</span>
-                      )}{" "}
-                    </button>{" "}
-                  </td>
-                  <td className="companyTableCellData">
-                    {row.loginTimes >= 0 ? row.loginTimes : "N/A"}
-                  </td>
-                  <td className="companyTableCellData">
-                    {row.lastLogin ? row.lastLogin : "N/A"}
-                  </td>
+              <thead></thead>
+              <tbody>
+                <tr className="companyTableCell">
+                  <th className="companyTableCellHeader">Management</th>
+                  <th className="companyTableCellHeader">User Name</th>
+                  <th className="companyTableCellHeader">NickName</th>
+                  <th className="companyTableCellHeader">Designation</th>
+                  <th className="companyTableCellHeader">Credits</th>
+                  <th className="companyTableCellHeader">TimeZone</th>
+                  <th className="companyTableCellHeader">Status</th>
+                  <th className="companyTableCellHeader">Login Times</th>
+                  <th className="companyTableCellHeader">Last Login</th>
                 </tr>
-              ))}
+
+                {filteredClient.map((row, index) => (
+                  <tr className="companyTableCell" key={row.name}>
+                    <td className="companyTableCellDataButtonContainer">
+                      <button
+                        className="companyTableCellDataButtonContainerButton"
+                        onClick={() => setSelectedAccount(row)}
+                      >
+                        Update
+                      </button>
+                    </td>
+                    <td
+                      className="companyTableCellDataUserName"
+                      onClick={() => handleCompanyClick(row)}
+                    >
+                      {row.userName}
+                    </td>
+                    <td className="companyTableCellData">
+                      {row.nickName ? row.nickName : "N/A"}
+                    </td>
+                    <td className="companyTableCellData">
+                      {row.designation ? row.designation : "N/A"}
+                    </td>
+                    <td className="companyTableCellData">{row.credits}</td>
+                    <td className="companyTableCellData">
+                      {row.timeZone ? row.timeZone : "EST"}
+                    </td>
+                    <td className="companyTableCellData">
+                      <button
+                        className="companyTableCellDataButtonContainerButton upper"
+                        style={{
+                          backgroundColor: row.activeStatus ? "green" : "red",
+                          marginLeft: "2px",
+                          marginRight: "2px",
+                        }}
+                        onClick={() => handleActiveInactive(row)}
+                      >
+                        {row.activeStatus ? (
+                          <span style={{ paddingLeft: "1px" }}>
+                            &nbsp;Active&nbsp;&nbsp;
+                          </span>
+                        ) : (
+                          <span>InActive</span>
+                        )}{" "}
+                      </button>{" "}
+                    </td>
+                    <td className="companyTableCellData">
+                      {row.loginTimes >= 0 ? row.loginTimes : "N/A"}
+                    </td>
+                    <td className="companyTableCellData">
+                      {row.lastLogin ? row.lastLogin : "N/A"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </div>
           <div className="paginationContainer">
